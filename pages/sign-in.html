@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign In — Cycology Cycling Club</title>
+  <meta name="description" content="Sign in to the Cycology member area to access ride schedules, member events and the club portal." />
+  <meta name="theme-color" content="#D60B52" />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23D60B52'/><text x='50' y='66' text-anchor='middle' font-family='Arial Black' font-size='52' fill='white'>C</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main id="main">
+    <header class="page-header">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a> <span>/</span>
+          <span aria-current="page">Sign In</span>
+        </nav>
+        <h1>Member Sign In</h1>
+        <p style="max-width: 640px; color:#d6dbe2; margin: 0;">Access the Cycology member portal.</p>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="container">
+        <div style="max-width: 460px; margin: 0 auto; background:#fff; border:1px solid var(--color-line); border-radius: var(--radius-lg); padding: 2.5rem 2rem; box-shadow: var(--shadow-sm);">
+          <form class="form" data-fake-submit novalidate>
+            <div>
+              <label for="email">Email <span class="req">*</span></label>
+              <input id="email" type="email" required autocomplete="email" />
+            </div>
+            <div>
+              <label for="password">Password <span class="req">*</span></label>
+              <input id="password" type="password" required autocomplete="current-password" />
+            </div>
+            <div style="display:flex; justify-content: space-between; align-items: center; font-size: .9rem;">
+              <label style="font-weight: 500;">
+                <input type="checkbox" style="width:auto; margin-right:.4rem;" />
+                Remember me
+              </label>
+              <a href="#">Forgot password?</a>
+            </div>
+            <div class="actions">
+              <button type="submit" class="btn btn-primary" style="width:100%; justify-content: center;">Sign In</button>
+            </div>
+            <p class="form-note" style="font-size: .9rem; color: var(--color-muted); margin-top: .5rem; text-align:center;"></p>
+          </form>
+
+          <hr style="border:0; border-top: 1px solid var(--color-line); margin: 1.5rem 0;" />
+
+          <p style="text-align: center; margin: 0; color: var(--color-muted); font-size: .95rem;">
+            Not a member yet? <a href="enquiry-form.html"><strong>Apply to join →</strong></a>
+          </p>
+        </div>
+
+        <p style="margin: 2rem auto 0; max-width: 620px; padding: 1rem 1.25rem; background: var(--color-bg-alt); border-left: 4px solid var(--color-accent); border-radius: 6px; font-size: .92rem;">
+          <strong>Note for editors:</strong> This sign-in form is a UI placeholder. To make it functional you'll need to wire it to a backend authentication service — options that work with shared hosting include Firebase Auth, Auth0, or a simple PHP/MySQL handler.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

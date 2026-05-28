@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gallery — Cycology Cycling Club</title>
+  <meta name="description" content="Photos from Cycology rides, events and CSR campaigns — including Cycolobration 2025, Amazon Ride 2023 and the Independence Day Ride." />
+  <meta name="theme-color" content="#D60B52" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23D60B52'/><text x='50' y='66' text-anchor='middle' font-family='Arial Black' font-size='52' fill='white'>C</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main id="main">
+    <header class="page-header">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a> <span>/</span>
+          <a href="#">Events</a> <span>/</span>
+          <span aria-current="page">Gallery</span>
+        </nav>
+        <h1>Gallery</h1>
+        <p style="max-width: 640px; color:#d6dbe2; margin: 0;">Moments from our rides, events and community campaigns.</p>
+      </div>
+    </header>
+
+    <!--
+      AUTO-LOADING GALLERY
+      ====================
+      Each album below points at a folder inside /images/gallery/ via the
+      data-gallery-event attribute. JavaScript fetches /gallery.php?event=…
+      and renders the images it finds there.
+
+      To add a new album:
+        1. Create a folder under /images/gallery/ using a URL-safe slug.
+        2. Copy one of the <section> blocks below.
+        3. Change the heading text and the data-gallery-event value.
+        4. That's it. No other HTML to edit.
+
+      To remove an album: delete the section.
+      To add/remove photos: drop or delete files in the matching folder.
+    -->
+
+    <section class="section">
+      <div class="container">
+        <span class="eyebrow">Featured Album</span>
+        <h2 class="section-title">Cycolobration 2025</h2>
+        <p class="section-lead">The annual Cycology celebration ride and party.</p>
+
+        <div class="gallery-grid" data-gallery-event="cycolobration-2025" aria-live="polite">
+          <p class="gallery-loading">Loading photos…</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container">
+        <span class="eyebrow">Album</span>
+        <h2 class="section-title">Cycology Amazon Ride 2023</h2>
+
+        <div class="gallery-grid" data-gallery-event="amazon-ride-2023" aria-live="polite">
+          <p class="gallery-loading">Loading photos…</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <span class="eyebrow">Album</span>
+        <h2 class="section-title">Independence Day Ride</h2>
+
+        <div class="gallery-grid" data-gallery-event="independence-day-ride" aria-live="polite">
+          <p class="gallery-loading">Loading photos…</p>
+        </div>
+
+        <p style="margin-top: 2rem; padding: 1rem 1.25rem; background: var(--color-bg-alt); border-left: 4px solid var(--color-accent); border-radius: 6px; font-size: .92rem;">
+          <strong>For editors:</strong> Drop image files into the matching folder under
+          <code>/images/gallery/&lt;event-slug&gt;/</code> and they appear here automatically.
+          See <code>/images/README.md</code> for the full guide.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Become a Member — Cycology Cycling Club</title>
+  <meta name="description" content="Apply to become a member of Cycology Cycling Club. Open to any professional with an interest in cycling." />
+  <meta name="theme-color" content="#D60B52" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23D60B52'/><text x='50' y='66' text-anchor='middle' font-family='Arial Black' font-size='52' fill='white'>C</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main id="main">
+    <header class="page-header">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a> <span>/</span>
+          <span aria-current="page">Become a Member</span>
+        </nav>
+        <h1>Become a Member</h1>
+        <p style="max-width: 720px; color:#d6dbe2; margin: 0;">Cycology is open to any professional with an interest in cycling. Complete the form below — if approved, you'll be invited to pay your signup and annual subscription fees.</p>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="container">
+        <div class="two-col" style="grid-template-columns: 1.3fr 1fr; align-items: flex-start;">
+          <div class="reveal">
+            <span class="eyebrow">Application</span>
+            <h2>Tell us about yourself.</h2>
+            <p style="color: var(--color-muted); margin-bottom: 2rem;">All fields marked <span class="req">*</span> are required.</p>
+
+            <form class="form" data-fake-submit novalidate>
+              <div class="form-grid">
+                <div>
+                  <label for="firstName">First name <span class="req">*</span></label>
+                  <input id="firstName" name="firstName" required autocomplete="given-name" />
+                </div>
+                <div>
+                  <label for="lastName">Last name <span class="req">*</span></label>
+                  <input id="lastName" name="lastName" required autocomplete="family-name" />
+                </div>
+              </div>
+              <div class="form-grid">
+                <div>
+                  <label for="email">Email <span class="req">*</span></label>
+                  <input id="email" name="email" type="email" required autocomplete="email" />
+                </div>
+                <div>
+                  <label for="phone">Phone <span class="req">*</span></label>
+                  <input id="phone" name="phone" type="tel" required autocomplete="tel" />
+                </div>
+              </div>
+              <div class="form-grid">
+                <div>
+                  <label for="dob">Date of birth</label>
+                  <input id="dob" name="dob" type="date" />
+                </div>
+                <div>
+                  <label for="gender">Gender</label>
+                  <select id="gender" name="gender">
+                    <option value="">— Select —</option>
+                    <option>Female</option>
+                    <option>Male</option>
+                    <option>Prefer not to say</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label for="profession">Profession / Occupation <span class="req">*</span></label>
+                <input id="profession" name="profession" required />
+              </div>
+              <div>
+                <label for="company">Company / Organisation</label>
+                <input id="company" name="company" />
+              </div>
+
+              <div class="form-grid">
+                <div>
+                  <label for="experience">Cycling experience <span class="req">*</span></label>
+                  <select id="experience" name="experience" required>
+                    <option value="">— Select —</option>
+                    <option>Beginner — new to cycling</option>
+                    <option>Intermediate — comfortable on the road</option>
+                    <option>Advanced — regular group rider</option>
+                    <option>Competitive — racing experience</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="bikeType">Bike type</label>
+                  <select id="bikeType" name="bikeType">
+                    <option value="">— Select —</option>
+                    <option>Road</option>
+                    <option>Hybrid</option>
+                    <option>Mountain</option>
+                    <option>Fat bike</option>
+                    <option>None — looking to buy</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label for="referrer">Were you referred by an existing member?</label>
+                <input id="referrer" name="referrer" placeholder="Their name (optional)" />
+              </div>
+              <div>
+                <label for="why">Why do you want to join Cycology?</label>
+                <textarea id="why" name="why" placeholder="Tell us a bit about your motivation."></textarea>
+              </div>
+              <div>
+                <label style="font-weight: 500;">
+                  <input type="checkbox" required style="width:auto; margin-right:.5rem;" />
+                  I agree to abide by the club's <a href="code-of-conduct.html">Code of Conduct</a> and <a href="safety.html">Safety Rules</a>. <span class="req">*</span>
+                </label>
+              </div>
+
+              <div class="actions">
+                <button class="btn btn-primary" type="submit">Submit Application</button>
+                <a class="btn btn-ghost" href="../index.html">Cancel</a>
+              </div>
+              <p class="form-note" style="font-size: .9rem; color: var(--color-muted); margin-top: .5rem;"></p>
+            </form>
+          </div>
+
+          <aside class="reveal" style="display: grid; gap: 1.25rem; position: sticky; top: 100px;">
+            <div class="feature">
+              <div class="feature-icon" aria-hidden="true">✓</div>
+              <h3>What happens next</h3>
+              <ol style="margin: 0; padding-left: 1.2rem; color: #4a525c;">
+                <li>We review your application.</li>
+                <li>You'll be invited to a Coffee Ride to meet members.</li>
+                <li>On approval, you pay signup and annual dues.</li>
+                <li>Welcome to Cycology.</li>
+              </ol>
+            </div>
+            <div class="feature">
+              <div class="feature-icon" aria-hidden="true">♥</div>
+              <h3>Minimum commitment</h3>
+              <p>Members are required to participate in at least <strong>6 rides a year</strong> and attend one club function.</p>
+            </div>
+            <div class="feature">
+              <div class="feature-icon" aria-hidden="true">⛑</div>
+              <h3>Before your first ride</h3>
+              <p>Helmet is mandatory. Lights required for night rides. Read the <a href="safety.html">Safety</a> page in full.</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

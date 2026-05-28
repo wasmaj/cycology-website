@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:cycology.com.ng)",
+      "WebFetch(domain:www.cycology.com.ng)",
+      "Bash(pdftotext -v)",
+      "Bash(pdftotext -layout \"C:/Users/WasiuMajule/Downloads/Cycology-Style Guide copy \\(1\\).pdf\" \"C:/Users/WasiuMajule/Desktop/Cycology-website/.claude/brand-guide.txt\")",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}
