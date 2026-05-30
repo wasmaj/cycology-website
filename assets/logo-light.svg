@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Cycology logo — full lock-up with WHITE wordmark.
+  Use this variant on dark backgrounds (footer, dark hero, etc.).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Cycology">
+  <title>Cycology</title>
+  <polygon points="385,38 415,38 400,80" fill="#F39200"/>
+  <polygon points="355,108 445,108 400,180" fill="#46BFE0"/>
+  <circle cx="240" cy="280" r="98" fill="none" stroke="#D60B52" stroke-width="28"/>
+  <circle cx="560" cy="280" r="98" fill="none" stroke="#FFD744" stroke-width="28"/>
+  <circle cx="560" cy="280" r="52" fill="#D60B52"/>
+  <circle cx="560" cy="280" r="14" fill="#FFD744"/>
+  <text x="400" y="470" text-anchor="middle"
+        font-family="'Open Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+        font-weight="800" font-size="76" letter-spacing="4"
+        fill="#FFFFFF">CYCOLOGY</text>
+</svg>

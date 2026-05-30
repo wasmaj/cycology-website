@@ -23,8 +23,8 @@
   <header class="site-header" role="banner">
     <div class="container nav-wrap">
       <a class="brand" href="${ROOT}index.html" aria-label="Cycology home">
-        <span class="brand-mark" aria-hidden="true">C</span>
-        <span>CYCOLOGY</span>
+        <img class="brand-mark-img" src="${ROOT}assets/logo-mark.svg" alt="" aria-hidden="true" width="64" height="30" />
+        <span class="brand-text">CYCOLOGY</span>
       </a>
 
       <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
@@ -91,9 +91,8 @@
     <div class="container">
       <div class="footer-grid">
         <div>
-          <a class="brand brand--footer" href="${ROOT}index.html">
-            <span class="brand-mark" aria-hidden="true">C</span>
-            <span>CYCOLOGY</span>
+          <a class="brand brand--footer" href="${ROOT}index.html" aria-label="Cycology home">
+            <img class="brand-logo-footer" src="${ROOT}assets/logo-light.svg" alt="Cycology" width="180" height="113" />
           </a>
           <p>A not-for-profit cycling club established in 2011. Our vision is to create a global platform for promoting cycling as a tool for a healthy lifestyle and social development.</p>
           <div class="social-row" aria-label="Social media">

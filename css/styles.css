@@ -198,47 +198,51 @@ ul.clean { list-style: none; padding: 0; margin: 0; }
   display: flex; align-items: center; justify-content: space-between;
   gap: 1rem; min-height: 72px;
 }
+/* ---------- Brand lock-up (header & footer) ----------
+   Header uses the bike-mark SVG + a separate CYCOLOGY wordmark in HTML
+   so the wordmark stays legible at small heights.
+   Footer uses the full logo SVG (light variant) since there's room
+   for the wordmark to render inside the SVG.
+   To change the logo, replace /assets/logo*.svg — no CSS edits needed. */
+
 .brand {
-  display: flex; align-items: center; gap: .65rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .65rem;
+  text-decoration: none;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.45rem;
+  font-size: 1.25rem;
   color: var(--color-charcoal);
-  letter-spacing: -0.01em;
-  text-transform: lowercase;       /* matches the rounded wordmark style */
+  letter-spacing: .04em;
 }
-/* The brand mark is a stylized multi-colour C ring — the official wordmark
-   "was selected based on its round wheel like qualities." This evokes a
-   bike wheel through a conic-gradient ring around the 'C' letterform. */
-.brand-mark {
-  position: relative;
-  width: 40px; height: 40px; border-radius: 50%;
-  background: conic-gradient(
-    from -45deg,
-    var(--brand-yellow)  0deg   90deg,
-    var(--brand-cyan)   90deg  180deg,
-    var(--brand-pink)  180deg  270deg,
-    var(--brand-orange) 270deg 360deg
-  );
-  display: grid; place-items: center;
-  color: var(--brand-black); font-family: var(--font-display);
-  font-weight: 800; font-size: 1.05rem;
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
+.brand-mark-img {
+  height: 32px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
 }
-.brand-mark::before {
-  content: 'C';
-  position: relative; z-index: 1;
-  width: 70%; height: 70%; border-radius: 50%;
-  background: #fff;
-  display: grid; place-items: center;
-  font-family: var(--font-display); font-weight: 800;
-  color: var(--brand-black);
-  font-size: 1rem;
-  letter-spacing: -0.04em;
+.brand-text {
+  line-height: 1;
+  white-space: nowrap;
 }
-/* hide the inline "C" text since the ::before pseudo provides the letter */
-.brand-mark { color: transparent; }
+
+/* Footer brand uses the full logo (mark + wordmark inside the SVG) */
+.brand--footer {
+  gap: 0;
+  margin-bottom: 1rem;
+}
+.brand-logo-footer {
+  height: 64px;
+  width: auto;
+  display: block;
+}
+
+/* Compact on narrow viewports — hide the HTML wordmark, keep just the mark */
+@media (max-width: 420px) {
+  .brand-text { display: none; }
+  .brand-mark-img { height: 36px; }
+}
 .nav-list {
   display: flex; gap: .25rem; list-style: none; margin: 0; padding: 0;
   align-items: center;

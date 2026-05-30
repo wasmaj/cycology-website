@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Cycology brand mark — the bicycle icon, no wordmark.
+  Use this variant in compact contexts (favicons, header mark,
+  social avatars, app icons). Brand-guide minimum size: 15mm wide.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" role="img" aria-label="Cycology">
+  <title>Cycology</title>
+  <polygon points="385,38 415,38 400,80" fill="#F39200"/>
+  <polygon points="355,108 445,108 400,180" fill="#46BFE0"/>
+  <circle cx="240" cy="280" r="98" fill="none" stroke="#D60B52" stroke-width="28"/>
+  <circle cx="560" cy="280" r="98" fill="none" stroke="#FFD744" stroke-width="28"/>
+  <circle cx="560" cy="280" r="52" fill="#D60B52"/>
+  <circle cx="560" cy="280" r="14" fill="#FFD744"/>
+</svg>
