@@ -18,7 +18,7 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: demo.cycology.com.ng 
-          username: ftpst@demo.cycology.com.ng
+          username: ftps@demo.cycology.com.ng
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
