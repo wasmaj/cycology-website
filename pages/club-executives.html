@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Club Executives — Cycology Cycling Club</title>
-  <meta name="description" content="Meet the Cycology Club Executives — the volunteer leadership team running rides, communications, finance, membership, media and CSR." />
+  <meta name="description" content="Meet the Cycology Club Executives — the volunteer leadership team running rides, communications, finance, membership, media, safety and CSR." />
   <meta name="theme-color" content="#D60B52" />
   <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23D60B52'/><text x='50' y='66' text-anchor='middle' font-family='Arial Black' font-size='52' fill='white'>C</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -32,7 +32,7 @@
       <div class="container">
         <span class="eyebrow">Meet the team</span>
         <h2 class="section-title">The people who keep us rolling.</h2>
-        <p class="section-lead" style="margin-bottom: 3rem;">Our Club Executives are elected from the membership and serve fixed terms. They lead our weekly rides, manage communications, coordinate events, oversee finances, run CSR campaigns and welcome new members into the Cycology community.</p>
+        <p class="section-lead" style="margin-bottom: 3rem;">Our Club Executives are elected from the membership. They lead our weekly rides, manage communications and media, oversee finances and safety, run our CSR campaigns and welcome new members into the Cycology community.</p>
 
         <!--
           EXECUTIVES GRID
@@ -40,17 +40,59 @@
           Each card auto-renders a brand-coloured initials placeholder until
           a real headshot is uploaded.
 
-          To add a real photo for any executive:
-            1. Save the photo as: ../images/team/<first-last>.jpg
-               (lowercase, hyphenated — matches the slug in the src below)
-            2. Refresh. The placeholder is replaced by the photo.
-            3. Recommended size: 800 × 1000 px portrait, compressed under 200 KB.
+          To add a real photo: save it as ../images/team/<first-last>.jpg
+          (lowercase, hyphenated — matches the slug in the src below).
+          Recommended size: 800 × 1000 px portrait, compressed under 200 KB.
 
-          To add a new executive: copy any <article class="team-card"> block.
-          Update the name, role, image src and data-initials attribute.
+          To add a new executive: copy any <article class="team-card"> block,
+          update name, role, image src and data-initials.
         -->
 
         <div class="team-grid">
+
+          <article class="team-card reveal">
+            <div class="team-photo" data-initials="KO">
+              <img src="../images/team/kunle-osunkunle.jpg" alt="Kunle Osunkunle" loading="lazy"
+                   onerror="this.style.display='none'" />
+            </div>
+            <div class="team-body">
+              <h3 class="team-name">Kunle Osunkunle</h3>
+              <p class="team-role team-role--accent">Captain</p>
+            </div>
+          </article>
+
+          <article class="team-card reveal">
+            <div class="team-photo" data-initials="YT">
+              <img src="../images/team/yejide-taiwo.jpg" alt="Yejide Taiwo" loading="lazy"
+                   onerror="this.style.display='none'" />
+            </div>
+            <div class="team-body">
+              <h3 class="team-name">Yejide Taiwo</h3>
+              <p class="team-role team-role--accent">Vice Captain</p>
+            </div>
+          </article>
+
+          <article class="team-card reveal">
+            <div class="team-photo" data-initials="BB">
+              <img src="../images/team/bukky-bademosi.jpg" alt="Bukky Bademosi" loading="lazy"
+                   onerror="this.style.display='none'" />
+            </div>
+            <div class="team-body">
+              <h3 class="team-name">Bukky Bademosi</h3>
+              <p class="team-role">VC &mdash; External Rides</p>
+            </div>
+          </article>
+
+          <article class="team-card reveal">
+            <div class="team-photo" data-initials="AO">
+              <img src="../images/team/ayodimeji-olugbewesa.jpg" alt="Ayodimeji Olugbewesa" loading="lazy"
+                   onerror="this.style.display='none'" />
+            </div>
+            <div class="team-body">
+              <h3 class="team-name">Ayodimeji Olugbewesa</h3>
+              <p class="team-role">VC &mdash; Internal Rides</p>
+            </div>
+          </article>
 
           <article class="team-card reveal">
             <div class="team-photo" data-initials="KA">
@@ -97,13 +139,35 @@
           </article>
 
           <article class="team-card reveal">
-            <div class="team-photo" data-initials="AO">
-              <img src="../images/team/ayodimeji-olugbewesa.jpg" alt="Ayodimeji Olugbewesa" loading="lazy"
+            <div class="team-photo" data-initials="AL">
+              <img src="../images/team/akorede-lemboye.jpg" alt="Akorede Lemboye" loading="lazy"
                    onerror="this.style.display='none'" />
             </div>
             <div class="team-body">
-              <h3 class="team-name">Ayodimeji Olugbewesa</h3>
-              <p class="team-role">Vice Captain &mdash; Internal Rides</p>
+              <h3 class="team-name">Akorede Lemboye</h3>
+              <p class="team-role">Safety Secretary</p>
+            </div>
+          </article>
+
+          <article class="team-card reveal">
+            <div class="team-photo" data-initials="FA">
+              <img src="../images/team/fola-alade.jpg" alt="Fola Alade" loading="lazy"
+                   onerror="this.style.display='none'" />
+            </div>
+            <div class="team-body">
+              <h3 class="team-name">Fola Alade</h3>
+              <p class="team-role">Social Secretary</p>
+            </div>
+          </article>
+
+          <article class="team-card reveal">
+            <div class="team-photo" data-initials="UO">
+              <img src="../images/team/uhabia-ojike.jpg" alt="Uhabia Ojike" loading="lazy"
+                   onerror="this.style.display='none'" />
+            </div>
+            <div class="team-body">
+              <h3 class="team-name">Uhabia Ojike</h3>
+              <p class="team-role">Sponsorship Secretary</p>
             </div>
           </article>
 
@@ -111,9 +175,8 @@
 
         <p style="margin-top: 2.5rem; padding: 1rem 1.25rem; background: var(--color-bg-alt); border-left: 4px solid var(--color-accent); border-radius: 6px; font-size: .92rem;">
           <strong>For editors:</strong> Drop headshot photos into <code>/images/team/</code> using
-          the filenames shown above (e.g. <code>kemi-ajayi.jpg</code>). Cards display brand-coloured
-          initials until a photo is uploaded. To add a new executive, copy any <code>&lt;article class="team-card"&gt;</code>
-          block, update the name, role, image src and <code>data-initials</code> attribute.
+          the filenames shown above (e.g. <code>kunle-osunkunle.jpg</code>). Cards display brand-coloured
+          initials until a photo is uploaded.
         </p>
       </div>
     </section>
