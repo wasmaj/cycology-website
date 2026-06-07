@@ -139,41 +139,44 @@ Refresh the homepage and you'll see your new photo.
 - To change the slide count or its caption text (eyebrow, title, buttons),
   edit the `.hero-slide` blocks in `index.html`.
 
-#### Gallery (events page) — fully automatic
-Each event has its own folder under `/images/gallery/`:
+#### Gallery (events page)
+The gallery works like an album index: `/pages/gallery.html` shows a grid of
+album cards (cover photo + title + photo count); clicking a card opens
+`/pages/album.html?album=<slug>`, which shows that album's photos in a grid
+with a click-to-zoom lightbox.
+
+Each event has its own folder under `/images/gallery/`, e.g.:
 
 ```
 /images/gallery/cycolobration-2025/
+/images/gallery/cycology-amazon-crit-2025/
 /images/gallery/amazon-ride-2023/
-/images/gallery/independence-day-ride/
 ```
 
-**Drop any image files into a folder and they appear on the gallery page
-automatically.** No HTML editing needed.
+The album list lives in **`js/gallery.js`** (the `ALBUMS` array). This keeps
+the gallery 100% static — it needs no PHP and no `fetch()`, so it renders the
+same whether you open the files directly from disk, host them statically, or
+deploy to a PHP host.
 
-- Supported formats: `.jpg .jpeg .png .webp .gif .avif`
-- Sort order is alphabetical, so use names like `photo-001.jpg`,
-  `photo-002.jpg`… to control the order if it matters.
-- Hidden files (anything starting with `.`) are ignored — safe for the
-  `.DS_Store` and `Thumbs.db` cruft macOS and Windows leave behind.
+- Supported formats: any web image (`.jpg .jpeg .png .webp .gif`).
+- Photos display in the order listed in `photos`. For numbered files there's
+  a `seq(n)` helper that expands to `photo-001.jpg … photo-0NN.jpg`.
 
-#### Adding a brand-new event album
+#### Adding / editing an album
 1. Create a folder under `/images/gallery/` using a URL-safe slug
    (lowercase letters, digits and dashes only — e.g. `new-year-ride-2026`).
 2. Drop your photos into it.
-3. Open `/pages/gallery.html` and copy an existing `<section>` block.
-   Change the heading text and the `data-gallery-event="…"` value to
-   match your new folder slug. That's the only HTML edit ever needed.
+3. Open `js/gallery.js` and add an entry to the `ALBUMS` array (newest first):
+   ```js
+   { slug: 'new-year-ride-2026', title: 'New Year Ride 2026',
+     photos: ['photo-001.jpg', 'photo-002.jpg', /* … */] }
+   // or, for sequential names: photos: seq(40)
+   ```
+   The first photo becomes the cover unless you add a `cover:` field. That's
+   the only edit needed — the card and album page are generated automatically.
 
-#### How it works under the hood
-`gallery.php` at the site root is a tiny PHP file (one HTTP endpoint) that
-scans a whitelisted event folder and returns the list of image filenames.
-The JavaScript on the gallery page fetches that list and builds the grid.
-
-If PHP isn't available (e.g. you're previewing locally by double-clicking
-the HTML file, or you move the site to a static-only host), the loader
-falls back to looking for `manifest.json` in each event folder — just a
-simple JSON array of filenames.
+> Note: `gallery.php` and the per-folder `manifest.json` files are remnants of
+> an earlier auto-scanning approach and are no longer used by the gallery.
 
 #### Adding a new page
 1. Copy an existing file in `/pages/` (e.g. `about-us.html`) and rename it.

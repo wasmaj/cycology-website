@@ -1247,3 +1247,58 @@ ul.clean { list-style: none; padding: 0; margin: 0; }
   .hero--classic .hero-num-bar { display: none; }
 }
 
+/* =========================================================
+   Gallery — album index cards + lightbox
+   ========================================================= */
+
+/* Album cards link through to album.html?album=<slug> */
+.album-card { text-decoration: none; color: inherit; }
+.album-card .card-body { padding: 1.1rem 1.3rem 1.3rem; }
+.album-card h3 { margin-bottom: .35rem; }
+.album-card .card-meta { margin-bottom: 0; }
+
+/* Lightbox overlay */
+.lightbox {
+  position: fixed; inset: 0; z-index: 1000;
+  display: none; align-items: center; justify-content: center;
+  background: rgba(10, 12, 15, .93);
+  padding: 4vh 4vw;
+}
+.lightbox.is-open { display: flex; }
+.lightbox-img {
+  max-width: 92vw; max-height: 86vh;
+  object-fit: contain;
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .55);
+}
+.lightbox-close {
+  position: absolute; top: .75rem; right: 1.25rem;
+  background: none; border: 0; color: #fff;
+  font-size: 2.6rem; line-height: 1; cursor: pointer;
+  padding: .25rem .5rem;
+}
+.lightbox-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  display: grid; place-items: center;
+  width: 3rem; height: 3rem; border-radius: 50%;
+  background: rgba(255, 255, 255, .14); border: 0; color: #fff;
+  font-size: 2.2rem; line-height: 1; cursor: pointer;
+  transition: background .2s var(--ease);
+}
+.lightbox-nav:hover { background: rgba(255, 255, 255, .28); }
+.lightbox-prev { left: 1rem; }
+.lightbox-next { right: 1rem; }
+.lightbox-counter {
+  position: absolute; bottom: 1.1rem; left: 0; right: 0;
+  text-align: center; color: #fff;
+  font-size: .85rem; letter-spacing: .06em;
+}
+@media (max-width: 600px) {
+  .lightbox-nav { width: 2.5rem; height: 2.5rem; font-size: 1.8rem; }
+  .lightbox-prev { left: .35rem; }
+  .lightbox-next { right: .35rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-nav { transition: none; }
+}
+

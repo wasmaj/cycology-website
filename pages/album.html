@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gallery — Cycology Cycling Club</title>
-  <meta name="description" content="Photo albums from Cycology rides, races and celebrations — including Cycolobration, the Amazon Crit and the Amazon Ride." />
+  <title>Album — Cycology Cycling Club</title>
+  <meta name="description" content="Photos from a Cycology Cycling Club event." />
   <meta name="theme-color" content="#D60B52" />
   <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='none' stroke='%23FFD744' stroke-width='10'/><circle cx='50' cy='50' r='22' fill='%23D60B52'/><circle cx='50' cy='50' r='6' fill='%23FFD744'/></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -20,29 +20,20 @@
       <div class="container">
         <nav class="crumbs" aria-label="Breadcrumb">
           <a href="../index.html">Home</a> <span>/</span>
-          <a href="#">Events</a> <span>/</span>
-          <span aria-current="page">Gallery</span>
+          <a href="gallery.html">Gallery</a> <span>/</span>
+          <span aria-current="page" data-album-crumb>Album</span>
         </nav>
-        <h1>Gallery</h1>
-        <p style="max-width: 640px; color:#d6dbe2; margin: 0;">Moments from our rides, races and community celebrations — browse by event.</p>
+        <h1 data-album-title>Album</h1>
+        <p style="max-width: 640px; color:#d6dbe2; margin: 0;">Tap any photo to view it full-size.</p>
       </div>
     </header>
 
     <section class="section">
       <div class="container">
-        <span class="eyebrow">Albums</span>
-        <h2 class="section-title">Browse by event.</h2>
-        <p class="section-lead">Pick an album to see the full set of photos. Newest events first.</p>
+        <p style="margin-bottom: 1.5rem;"><a class="card-link" href="gallery.html">&larr; All albums</a></p>
 
-        <!--
-          ALBUM INDEX
-          ===========
-          The grid of album cards below is built by js/gallery.js from the
-          ALBUMS list in that file. To add an album, drop photos into
-          images/gallery/<slug>/ and add an entry to ALBUMS.
-        -->
-        <div class="grid grid-3" data-album-index aria-live="polite">
-          <p class="gallery-loading">Loading albums…</p>
+        <div class="gallery-grid" data-album-view aria-live="polite">
+          <p class="gallery-loading">Loading photos…</p>
         </div>
       </div>
     </section>
