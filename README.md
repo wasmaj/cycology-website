@@ -37,10 +37,12 @@ No build step, no Node.js — just upload the folder to any shared host and you'
 │   └── main.js             ← Nav, carousel, FAQ, forms, gallery loader
 ├── /images/                ← All photos — see "Managing Images" section below
 │   ├── README.md
-│   ├── /hero/              ← 3 photos for homepage hero slider
+│   ├── /slide/             ← 5 photos for homepage hero slider
 │   │   ├── slide-1.jpg
 │   │   ├── slide-2.jpg
-│   │   └── slide-3.jpg
+│   │   ├── slide-3.jpg
+│   │   ├── slide-4.jpg
+│   │   └── slide-5.jpg
 │   └── /gallery/           ← One folder per event album
 │       ├── /cycolobration-2025/
 │       ├── /amazon-ride-2023/
@@ -119,12 +121,14 @@ The image system is designed so you almost never need to touch HTML when
 swapping photos around.
 
 #### Hero slider (homepage)
-Three files live in `/images/hero/`:
+Five files live in `/images/slide/`:
 
 ```
-/images/hero/slide-1.jpg
-/images/hero/slide-2.jpg
-/images/hero/slide-3.jpg
+/images/slide/slide-1.jpg
+/images/slide/slide-2.jpg
+/images/slide/slide-3.jpg
+/images/slide/slide-4.jpg
+/images/slide/slide-5.jpg
 ```
 
 To change a hero photo, **just overwrite the file with the same name**.
@@ -132,8 +136,8 @@ Refresh the homepage and you'll see your new photo.
 
 - Recommended size: 2000 × 1200 px or larger, landscape
 - Compress under ~250 KB for fast loading
-- If a file is missing, the hero falls back to a stock cycling photo so
-  nothing ever looks broken while you're working.
+- To change the slide count or its caption text (eyebrow, title, buttons),
+  edit the `.hero-slide` blocks in `index.html`.
 
 #### Gallery (events page) — fully automatic
 Each event has its own folder under `/images/gallery/`:
