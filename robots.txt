@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /pages/sign-in.html
+
+Sitemap: https://cycology.com.ng/sitemap.xml
