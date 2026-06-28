@@ -42,7 +42,7 @@
       return;
     }
     container.innerHTML = VIDEOS.map((v) => `
-      <article class="video-card reveal">
+      <article class="video-card">
         <div class="frame" role="button" tabindex="0" data-id="${esc(v.id)}"
              aria-label="Play video: ${esc(v.title)}">
           <img src="${thumb(v.id)}" alt="${esc(v.title)}" loading="lazy" />
