@@ -818,8 +818,14 @@ ul.clean { list-style: none; padding: 0; margin: 0; }
   background: rgba(0,0,0,.25);
   color: #fff; font-size: 3rem;
 }
+.video-card .frame img { object-fit: cover; }
+.video-card .frame[role="button"] { cursor: pointer; }
+.video-card .frame[role="button"]:hover .play,
+.video-card .frame[role="button"]:focus-visible .play { background: rgba(214, 11, 82, .35); }
+.video-card .frame:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
 .video-card .info { padding: 1rem 1.2rem; background:#fff; color: var(--color-charcoal); }
 .video-card .info h3 { font-size: 1.05rem; margin: 0; }
+.video-date { display: block; margin-top: .35rem; color: var(--color-muted); font-size: .8rem; letter-spacing: .03em; }
 
 /* Shop grid */
 .shop-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
