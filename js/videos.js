@@ -41,9 +41,9 @@
       container.innerHTML = '<p class="gallery-empty">No videos yet.</p>';
       return;
     }
-    container.innerHTML = VIDEOS.map((v) => `
+    container.innerHTML = VIDEOS.map((v, i) => `
       <article class="video-card">
-        <div class="frame" role="button" tabindex="0" data-id="${esc(v.id)}"
+        <div class="frame" role="button" tabindex="0" data-index="${i}"
              aria-label="Play video: ${esc(v.title)}">
           <img src="${thumb(v.id)}" alt="${esc(v.title)}" loading="lazy" />
           <span class="play" aria-hidden="true">&#9654;</span>
@@ -55,25 +55,72 @@
       </article>`).join('');
 
     container.querySelectorAll('.frame').forEach((frame) => {
-      const playIt = () => play(frame);
-      frame.addEventListener('click', playIt);
+      const openIt = () => openModal(parseInt(frame.dataset.index, 10));
+      frame.addEventListener('click', openIt);
       frame.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playIt(); }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openIt(); }
       });
     });
   }
 
-  function play(frame) {
-    const id = frame.dataset.id;
-    if (!id || frame.querySelector('iframe')) return;
-    const title = frame.getAttribute('aria-label') || '';
-    frame.innerHTML =
-      '<iframe src="https://www.youtube.com/embed/' + encodeURIComponent(id) +
-      '?autoplay=1&rel=0" title="' + esc(title) + '" frameborder="0" ' +
+  // ---- Expanded modal player ----
+  let modal = null;
+  let idx = 0;
+
+  function buildModal() {
+    modal = document.createElement('div');
+    modal.className = 'video-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Video player');
+    modal.innerHTML =
+      '<button class="video-modal-close" type="button" aria-label="Close player">&times;</button>' +
+      '<button class="lightbox-nav video-modal-prev" type="button" aria-label="Previous video">&lsaquo;</button>' +
+      '<div class="video-modal-stage">' +
+        '<div class="video-modal-frame"></div>' +
+        '<p class="video-modal-title"></p>' +
+      '</div>' +
+      '<button class="lightbox-nav video-modal-next" type="button" aria-label="Next video">&rsaquo;</button>';
+    document.body.appendChild(modal);
+
+    modal.querySelector('.video-modal-close').addEventListener('click', closeModal);
+    modal.querySelector('.video-modal-prev').addEventListener('click', (e) => { e.stopPropagation(); showVideo(idx - 1); });
+    modal.querySelector('.video-modal-next').addEventListener('click', (e) => { e.stopPropagation(); showVideo(idx + 1); });
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', onKey);
+  }
+
+  function showVideo(n) {
+    const v = VIDEOS[(n + VIDEOS.length) % VIDEOS.length];
+    idx = (n + VIDEOS.length) % VIDEOS.length;
+    modal.querySelector('.video-modal-frame').innerHTML =
+      '<iframe src="https://www.youtube.com/embed/' + encodeURIComponent(v.id) +
+      '?autoplay=1&rel=0" title="' + esc(v.title) + '" frameborder="0" ' +
       'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ' +
       'allowfullscreen></iframe>';
-    frame.removeAttribute('role');
-    frame.removeAttribute('tabindex');
+    modal.querySelector('.video-modal-title').textContent = v.title;
+  }
+
+  function openModal(n) {
+    if (!modal) buildModal();
+    showVideo(n);
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove('is-open');
+    // Clearing the iframe stops playback (and the audio).
+    modal.querySelector('.video-modal-frame').innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  function onKey(e) {
+    if (!modal || !modal.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeModal();
+    else if (e.key === 'ArrowLeft') showVideo(idx - 1);
+    else if (e.key === 'ArrowRight') showVideo(idx + 1);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
