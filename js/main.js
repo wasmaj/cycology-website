@@ -174,7 +174,7 @@
     // Submenu open on tap (mobile)
     $$('.nav-list .has-sub > a').forEach((a) => {
       a.addEventListener('click', (e) => {
-        if (window.matchMedia('(max-width: 980px)').matches) {
+        if (window.matchMedia('(max-width: 1100px)').matches) {
           e.preventDefault();
           a.parentElement.classList.toggle('open');
         }
