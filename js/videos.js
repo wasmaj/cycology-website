@@ -79,6 +79,7 @@
       '<div class="video-modal-stage">' +
         '<div class="video-modal-frame"></div>' +
         '<p class="video-modal-title"></p>' +
+        '<a class="video-modal-link" target="_blank" rel="noopener">Trouble playing? Watch on YouTube &#8599;</a>' +
       '</div>' +
       '<button class="lightbox-nav video-modal-next" type="button" aria-label="Next video">&rsaquo;</button>';
     document.body.appendChild(modal);
@@ -95,10 +96,11 @@
     idx = (n + VIDEOS.length) % VIDEOS.length;
     modal.querySelector('.video-modal-frame').innerHTML =
       '<iframe src="https://www.youtube.com/embed/' + encodeURIComponent(v.id) +
-      '?autoplay=1&rel=0" title="' + esc(v.title) + '" frameborder="0" ' +
+      '?autoplay=1&rel=0&playsinline=1" title="' + esc(v.title) + '" frameborder="0" ' +
       'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ' +
       'allowfullscreen></iframe>';
     modal.querySelector('.video-modal-title').textContent = v.title;
+    modal.querySelector('.video-modal-link').href = 'https://www.youtube.com/watch?v=' + v.id;
   }
 
   function openModal(n) {
