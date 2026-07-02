@@ -42,6 +42,13 @@
       ]
     },
     {
+      slug: 'world-bicycle-day-2025',
+      title: 'World Bicycle Day 2025',
+      // Drop photos into images/gallery/world-bicycle-day-2025/ then list them
+      // here (e.g. photos: seq(24) or ['photo-001.jpg', ...]).
+      photos: []
+    },
+    {
       slug: 'cycology-amazon-crit-2025',
       title: 'Cycology Amazon Crit 2025',
       photos: seq(48)
@@ -83,14 +90,16 @@
     }
     container.innerHTML = ALBUMS.map((a) => {
       const count = a.photos.length;
+      const media = a.cover
+        ? `<img src="${imgPath(a, a.cover)}" alt="${esc(a.title)} cover photo" loading="lazy" />`
+        : '';
+      const meta = count ? `${count} Photo${count === 1 ? '' : 's'}` : 'Photos coming soon';
       return `
         <a class="card album-card" href="album.html?album=${encodeURIComponent(a.slug)}">
-          <div class="card-media">
-            <img src="${imgPath(a, a.cover)}" alt="${esc(a.title)} cover photo" loading="lazy" />
-          </div>
+          <div class="card-media">${media}</div>
           <div class="card-body">
             <h3>${esc(a.title)}</h3>
-            <span class="card-meta">${count} Photo${count === 1 ? '' : 's'}</span>
+            <span class="card-meta">${meta}</span>
           </div>
         </a>`;
     }).join('');
@@ -114,6 +123,14 @@
     document.title = album.title + ' — Cycology Cycling Club';
     if (titleEl) titleEl.textContent = album.title;
     if (crumbEl) crumbEl.textContent = album.title;
+
+    if (!album.photos.length) {
+      container.innerHTML =
+        '<p class="gallery-empty"><strong>Photos coming soon.</strong><br/>' +
+        'Check back shortly for pictures from ' + esc(album.title) +
+        '. <a href="gallery.html">Back to the gallery</a></p>';
+      return;
+    }
 
     container.innerHTML = album.photos.map((file, i) => `
       <figure class="gallery-item" data-index="${i}" tabindex="0" role="button"
