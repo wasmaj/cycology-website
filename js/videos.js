@@ -27,6 +27,7 @@
   // Fallback list, used until/unless the live playlist loads (file://
   // preview, no PHP, or YouTube unreachable). Newest -> oldest.
   let VIDEOS = [
+    { id: 'qkCXyireSpQ', title: 'Breakfast with Gov. Babajide Sanwo-Olu on Share the Road', date: 'Jul 2026' },
     { id: 'uIL3tXhVr34', title: 'Mabogs Crit — LTV Coverage',             date: 'Jul 2026' },
     { id: 'LPFBZSHsIRU', title: 'Cycology Road Sweepers 2026',            date: 'May 2026' },
     { id: '-kJcUxiI0x0', title: 'Cycology — Share the Road',              date: 'May 2026' },
