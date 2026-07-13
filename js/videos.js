@@ -19,6 +19,7 @@
 
   // Newest -> oldest (by YouTube publish date).
   const VIDEOS = [
+    { id: 'uIL3tXhVr34', title: 'Mabogs Crit — LTV Coverage',             date: 'Jul 2026' },
     { id: 'LPFBZSHsIRU', title: 'Cycology Road Sweepers 2026',            date: 'May 2026' },
     { id: '-kJcUxiI0x0', title: 'Cycology — Share the Road',              date: 'May 2026' },
     { id: '-5RpJT4ArbI', title: 'Amazon Ride 2025',                       date: 'May 2026' },
