@@ -10,15 +10,23 @@
    NOTE: YouTube blocks embedded playback on file:// (Error 153) — it plays
    on http/https. A "Watch on YouTube" link is provided as a fallback.
 
-   Videos are listed newest -> oldest. TO ADD/REORDER: edit the VIDEOS
-   array below (keep it newest first). `id` is the YouTube video id.
+   AUTO-SYNC: the grid is built from the LIVE playlist via
+   /youtube-playlist.php — update the playlist on YouTube and the site
+   follows, no code changes needed. The VIDEOS array below is only a
+   fallback for when that endpoint can't be reached (file:// preview, no
+   PHP, or YouTube unreachable), so it's worth keeping roughly current.
+   Videos are shown newest -> oldest.
    ========================================================= */
 
 (function () {
   'use strict';
 
-  // Newest -> oldest (by YouTube publish date).
-  const VIDEOS = [
+  const ROOT = location.pathname.includes('/pages/') ? '../' : '';
+  const ENDPOINT = ROOT + 'youtube-playlist.php';
+
+  // Fallback list, used until/unless the live playlist loads (file://
+  // preview, no PHP, or YouTube unreachable). Newest -> oldest.
+  let VIDEOS = [
     { id: 'uIL3tXhVr34', title: 'Mabogs Crit — LTV Coverage',             date: 'Jul 2026' },
     { id: 'LPFBZSHsIRU', title: 'Cycology Road Sweepers 2026',            date: 'May 2026' },
     { id: '-kJcUxiI0x0', title: 'Cycology — Share the Road',              date: 'May 2026' },
@@ -162,8 +170,43 @@
     else if (e.key === 'ArrowRight') showVideo(idx + 1);
   }
 
+  // ---- Live sync from the YouTube playlist ----
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  function fmtDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    return isNaN(d.getTime()) ? '' : MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  async function syncFromPlaylist(container) {
+    try {
+      const res = await fetch(ENDPOINT, { cache: 'no-store' });
+      if (!res.ok) return;
+
+      // If PHP isn't executing, the raw .php source comes back — not JSON.
+      const ct = (res.headers.get('content-type') || '').toLowerCase();
+      if (!ct.includes('json')) return;
+
+      const data = await res.json();
+      if (!data || !Array.isArray(data.videos) || !data.videos.length) return;
+
+      VIDEOS = data.videos.map((v) => ({
+        id: v.id,
+        title: v.title,
+        date: fmtDate(v.published)
+      }));
+      render(container); // re-render with the live playlist
+    } catch (_) {
+      /* offline / file:// / no PHP — keep the built-in list */
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('[data-video-grid]');
-    if (container) render(container);
+    if (!container) return;
+    render(container);           // instant paint from the built-in list
+    syncFromPlaylist(container); // then refresh from the live playlist
   });
 })();
