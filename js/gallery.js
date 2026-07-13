@@ -36,9 +36,7 @@
     {
       slug: 'breakfast-with-gov-sanwo-olu',
       title: 'Breakfast with Gov. Sanwo-Olu',
-      // Drop photos into images/gallery/breakfast-with-gov-sanwo-olu/ then list
-      // them here (e.g. photos: seq(24) or ['photo-001.jpg', ...]).
-      photos: []
+      photos: seq(47)
     },
     {
       slug: 'cycolobration-2025',
