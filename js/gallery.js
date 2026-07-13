@@ -49,9 +49,7 @@
     {
       slug: 'world-bicycle-day-2025',
       title: 'World Bicycle Day 2025',
-      // Drop photos into images/gallery/world-bicycle-day-2025/ then list them
-      // here (e.g. photos: seq(24) or ['photo-001.jpg', ...]).
-      photos: []
+      photos: seq(5)
     },
     {
       slug: 'cycology-amazon-crit-2025',
