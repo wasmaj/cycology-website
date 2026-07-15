@@ -48,12 +48,15 @@
   const thumb = (id) => 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg';
 
   // ---- Grid of thumbnail cards ----
-  function render(container) {
+  function render(container, limit) {
     if (!VIDEOS.length) {
       container.innerHTML = '<p class="gallery-empty">No videos yet.</p>';
       return;
     }
-    container.innerHTML = VIDEOS.map((v, i) => `
+    // Featured grids show only the first `limit` (newest) videos. The slice
+    // keeps indexes 0..limit-1, so data-index still maps into VIDEOS.
+    const list = limit ? VIDEOS.slice(0, limit) : VIDEOS;
+    container.innerHTML = list.map((v, i) => `
       <article class="video-card">
         <div class="frame" role="button" tabindex="0" data-index="${i}"
              aria-label="Play video: ${esc(v.title)}">
@@ -181,7 +184,11 @@
     return isNaN(d.getTime()) ? '' : MONTHS[d.getMonth()] + ' ' + d.getFullYear();
   }
 
-  async function syncFromPlaylist(container) {
+  // Every video grid on the page (full page + any featured homepage grid).
+  const TARGETS = [];
+  function renderAll() { TARGETS.forEach((t) => render(t.el, t.limit)); }
+
+  async function syncFromPlaylist() {
     try {
       const res = await fetch(ENDPOINT, { cache: 'no-store' });
       if (!res.ok) return;
@@ -198,16 +205,19 @@
         title: v.title,
         date: fmtDate(v.published)
       }));
-      render(container); // re-render with the live playlist
+      renderAll(); // re-render every grid with the live playlist
     } catch (_) {
       /* offline / file:// / no PHP — keep the built-in list */
     }
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('[data-video-grid]');
-    if (!container) return;
-    render(container);           // instant paint from the built-in list
-    syncFromPlaylist(container); // then refresh from the live playlist
+    const full = document.querySelector('[data-video-grid]');            // videos page
+    const feat = document.querySelector('[data-video-featured]');        // homepage
+    if (full) TARGETS.push({ el: full, limit: 0 });
+    if (feat) TARGETS.push({ el: feat, limit: parseInt(feat.dataset.videoFeatured, 10) || 3 });
+    if (!TARGETS.length) return;
+    renderAll();          // instant paint from the built-in list
+    syncFromPlaylist();   // then refresh from the live playlist
   });
 })();

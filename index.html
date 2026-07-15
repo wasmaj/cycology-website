@@ -407,6 +407,25 @@
 
          ============ END BLOG TEASERS ============ -->
 
+    <!-- ============ FEATURED VIDEOS ============ -->
+    <section class="section">
+      <div class="container">
+        <span class="eyebrow">Watch</span>
+        <h2 class="section-title">Featured videos.</h2>
+        <p class="section-lead">Highlights from our rides, races and campaigns — click to play right here, no leaving the page.</p>
+
+        <!-- js/videos.js fills this grid with the newest videos from the
+             club's YouTube playlist. data-video-featured="3" sets how many. -->
+        <div class="video-grid" data-video-featured="3" aria-live="polite">
+          <p class="gallery-loading">Loading videos…</p>
+        </div>
+
+        <div style="text-align:center; margin-top: 2.5rem;">
+          <a class="btn btn-ghost" href="pages/videos.html">See all videos →</a>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ JOIN CTA ============ -->
     <section class="section section--dark">
       <div class="container" style="text-align:center;">
@@ -423,5 +442,6 @@
 
   <div id="site-footer"></div>
   <script src="js/main.js" defer></script>
+  <script src="js/videos.js" defer></script>
 </body>
 </html>
