@@ -29,70 +29,10 @@
 
     <section class="section">
       <div class="container">
-        <div class="grid grid-3">
-          <article class="card reveal">
-            <div class="card-media"><img src="../images/gallery/amazon-ride-2023/photo-010.jpg" alt="" loading="lazy" /></div>
-            <div class="card-body">
-              <span class="card-meta">November 22, 2020</span>
-              <h3>Cycology Club Donates Bicycle to Accident Victim</h3>
-              <p>The club rallies behind a road accident survivor — putting them back on two wheels with a fully fitted bike and helmet.</p>            </div>
-          </article>
-
-          <article class="card reveal">
-            <div class="card-media"><img src="../images/gallery/cycology-amazon-crit-2025/photo-001.jpg" alt="" loading="lazy" /></div>
-            <div class="card-body">
-              <span class="card-meta">November 23, 2020</span>
-              <h3>Cycology Club Canvasses Bicycle Lanes on Existing Roads</h3>
-              <p>Our policy push for dedicated cycling infrastructure in Lagos — and why every kilometre of bike lane saves lives.</p>            </div>
-          </article>
-
-          <article class="card reveal">
-            <div class="card-media"><img src="../images/gallery/amazon-ride-2023/photo-014.jpg" alt="" loading="lazy" /></div>
-            <div class="card-body">
-              <span class="card-meta">November 23, 2020</span>
-              <h3>Lagos Residents with HIV Get NNPC, Others' Intervention</h3>
-              <p>How the club joined a wider effort to support vulnerable Lagosians through the pandemic.</p>            </div>
-          </article>
-
-          <article class="card reveal">
-            <div class="card-media"><img src="../images/gallery/cycology-amazon-crit-2025/photo-006.jpg" alt="" loading="lazy" /></div>
-            <div class="card-body">
-              <span class="card-meta">November 23, 2020</span>
-              <h3>Post Covid-19 Green Recovery</h3>
-              <p>Cycling club advocates implementation of the non-motorised transport policy as part of a green recovery.</p>            </div>
-          </article>
-
-          <article class="card reveal">
-            <div class="card-media"><img src="../images/gallery/amazon-ride-2023/photo-007.jpg" alt="" loading="lazy" /></div>
-            <div class="card-body">
-              <span class="card-meta">July 5, 2020</span>
-              <h3>Cape Argus — Let The Games Begin</h3>
-              <p>A Cycology rider's perspective on lining up for the Cape Town Cycle Tour.</p>            </div>
-          </article>
-
-          <article class="card reveal">
-            <div class="card-media"><img src="../images/gallery/amazon-ride-2023/photo-009.jpg" alt="" loading="lazy" /></div>
-            <div class="card-body">
-              <span class="card-meta">July 5, 2020</span>
-              <h3>In the Zone</h3>
-              <p>Finding flow on the long ride — and what training in zones really means for everyday cyclists.</p>            </div>
-          </article>
-
-          <article class="card reveal">
-            <div class="card-media"><img src="../images/gallery/cycology-amazon-crit-2025/photo-012.jpg" alt="" loading="lazy" /></div>
-            <div class="card-body">
-              <span class="card-meta">July 5, 2020</span>
-              <h3>Is There Not a Cause?</h3>
-              <p>Why cycling, for many of us, is never just about the bike.</p>            </div>
-          </article>
-
-          <article class="card reveal">
-            <div class="card-media"><img src="../images/gallery/amazon-ride-2023/photo-022.jpg" alt="" loading="lazy" /></div>
-            <div class="card-body">
-              <span class="card-meta">June 30, 2020</span>
-              <h3>How Good Are These Guys Anyway?</h3>
-              <p>A frank look at the Cycology peloton from a first-timer's perspective.</p>            </div>
-          </article>
+        <!-- Cards are loaded from the `publications` database table by js/blog.js.
+             Manage posts at admin-publications.html — nothing to edit here. -->
+        <div class="grid grid-3" id="blog-grid">
+          <p class="gallery-empty gallery-loading">Loading articles…</p>
         </div>
       </div>
     </section>
@@ -100,5 +40,6 @@
 
   <div id="site-footer"></div>
   <script src="../js/main.js" defer></script>
+  <script src="../js/blog.js" defer></script>
 </body>
 </html>

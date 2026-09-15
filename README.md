@@ -110,7 +110,7 @@ v2 (August 2018)**:
 | Safety rules and gear list | `pages/safety.html` |
 | Code of Conduct | `pages/code-of-conduct.html` |
 | FAQ Q&A items | `pages/faq.html` |
-| Blog post cards | `pages/blog.html` |
+| Blog post cards | Database — manage at `pages/admin-publications.html` (see §4) |
 | Gallery photos | `pages/gallery.html` (swap `<img src="…">` to your file in `/images/`) |
 | Video thumbnails (or embed YouTube) | `pages/videos.html` |
 | Contact form / waiver / sign-in / enquiry | The matching `.html` file in `/pages/` |
@@ -185,7 +185,58 @@ deploy to a PHP host.
 
 ---
 
-## 4. Making the Forms Actually Work
+## 4. Publications (blog posts) in a database
+
+Blog posts can be stored in a MySQL table and managed from the browser
+instead of hand-editing `pages/blog.html`. Three pieces make this work:
+
+| File | Purpose |
+|---|---|
+| `sql/publications.sql` | Creates the `publications` table (+ optional seed rows) |
+| `api/publications.php` | JSON CRUD endpoint — create / read / update / delete rows |
+| `pages/admin-publications.html` + `js/admin-publications.js` | Admin screen: table of posts with New / Edit / Publish / Delete |
+| `js/blog.js` | Loads the public blog page from the table (published posts, newest first) |
+
+### One-time setup (cPanel)
+
+1. **cPanel → MySQL® Databases**: create a database and a user, then add the
+   user to the database with **All Privileges**.
+2. **cPanel → phpMyAdmin**: select the database, open the **SQL** tab, paste
+   the contents of `sql/publications.sql` and click **Go**.
+3. Copy `api/config.example.php` → `api/config.php` and fill in the DB
+   host/name/user/password. Set `admin_token` to a long random string
+   (`php -r "echo bin2hex(random_bytes(24));"`). This file is git-ignored —
+   upload it to the host manually.
+4. Open `https://yourdomain/pages/admin-publications.html`, paste the admin
+   token and click **Unlock**.
+
+### API reference
+
+```
+GET    /api/publications.php              list published posts (newest first)
+GET    /api/publications.php?all=1        list incl. drafts            [admin]
+GET    /api/publications.php?id=7         one post by id
+GET    /api/publications.php?slug=my-post one post by slug
+POST   /api/publications.php              create  { "title": "…", … } [admin]
+PUT    /api/publications.php?id=7         update  (any subset of fields) [admin]
+DELETE /api/publications.php?id=7         delete                       [admin]
+```
+
+Fields: `title` (required), `slug` (auto-generated from the title if blank),
+`excerpt`, `body`, `cover_image` (path relative to site root),
+`author`, `status` (`draft` | `published`), `published_at` (`YYYY-MM-DD`).
+
+Admin routes need the header `X-Admin-Token: <token>`. If the host strips
+custom headers, send `?token=<token>` instead; if it blocks PUT/DELETE, POST
+with `"_method": "PUT"` (or `"DELETE"`) in the JSON body.
+
+`pages/blog.html` has no hard-coded posts — `js/blog.js` fetches the published
+rows and builds the cards. Until the database is set up the page shows an
+"Articles couldn't be loaded" notice.
+
+---
+
+## 5. Making the Forms Actually Work
 
 All forms on the site (Contact, Enquiry, Waiver, Sign In, Newsletter) are
 client-side UI only — they show a "thanks" message but **do not send anything**.
@@ -204,7 +255,7 @@ to a WordPress install on the same domain at `/members/`.
 
 ---
 
-## 5. SEO Suggestions (Already Done + Future)
+## 6. SEO Suggestions (Already Done + Future)
 
 **Already in place:**
 - Unique `<title>` and `<meta description>` per page
@@ -230,7 +281,7 @@ to a WordPress install on the same domain at `/members/`.
 
 ---
 
-## 6. Accessibility Notes
+## 7. Accessibility Notes
 
 - All interactive elements are keyboard-navigable.
 - Focus rings use the amber accent colour for high visibility.
@@ -241,13 +292,13 @@ to a WordPress install on the same domain at `/members/`.
 
 ---
 
-## 7. Browser Support
+## 8. Browser Support
 
 Tested in modern Chrome, Edge, Firefox and Safari. Falls back gracefully in older browsers (the carousel and reveal animations degrade to plain static content; nothing is unreadable).
 
 ---
 
-## 8. Suggested UX Improvements (Optional)
+## 9. Suggested UX Improvements (Optional)
 
 Things the original site could benefit from that are easy to add later:
 
@@ -260,7 +311,7 @@ Things the original site could benefit from that are easy to add later:
 
 ---
 
-## 9. Credits
+## 10. Credits
 
 - **Fonts:** Bebas Neue + Inter via Google Fonts.
 - **Photography placeholders:** Unsplash (free for commercial use, no attribution required, but please swap with the club's own photos before launch).

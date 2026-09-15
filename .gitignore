@@ -1,1 +1,3 @@
 .claude/
+# Database credentials - never commit
+api/config.php

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manage Publications — Cycology Cycling Club</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#D60B52" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='none' stroke='%23FFD744' stroke-width='10'/><circle cx='50' cy='50' r='22' fill='%23D60B52'/><circle cx='50' cy='50' r='6' fill='%23FFD744'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main id="main">
+    <header class="page-header">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a> <span>/</span>
+          <span aria-current="page">Manage Publications</span>
+        </nav>
+        <h1>Manage Publications</h1>
+        <p style="max-width: 640px; color:#d6dbe2; margin: 0;">Create, edit, publish and delete blog posts stored in the database.</p>
+      </div>
+    </header>
+
+    <!-- Step 1: admin token (kept in this browser tab only) -->
+    <section class="section admin-auth" id="auth-section">
+      <div class="container">
+        <form class="form" id="token-form" autocomplete="off">
+          <label for="admin-token">Admin token <span class="req">*</span></label>
+          <input type="password" id="admin-token" placeholder="Paste the admin_token from api/config.php" required />
+          <div class="actions">
+            <button type="submit" class="btn btn-primary">Unlock</button>
+          </div>
+          <p class="admin-note" id="auth-msg" role="status"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- Step 2: table + editor -->
+    <section class="section admin-panel" id="panel-section" hidden>
+      <div class="container">
+        <div class="admin-toolbar">
+          <h2 class="section-title" style="margin:0">Publications <span class="admin-count" id="pub-count"></span></h2>
+          <div class="actions">
+            <button type="button" class="btn btn-primary" id="btn-new">+ New publication</button>
+            <button type="button" class="btn btn-dark" id="btn-lock">Lock</button>
+          </div>
+        </div>
+        <p class="admin-note" id="panel-msg" role="status"></p>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="pub-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Slug</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Author</th>
+                <th class="admin-actions-col">Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Editor dialog (create / edit) -->
+    <dialog class="admin-dialog" id="editor">
+      <form class="form" id="editor-form" method="dialog" novalidate>
+        <h3 id="editor-title">New publication</h3>
+        <input type="hidden" name="id" />
+
+        <label for="f-title">Title <span class="req">*</span></label>
+        <input type="text" id="f-title" name="title" maxlength="200" required />
+
+        <label for="f-slug">Slug <small>(leave blank to generate from title)</small></label>
+        <input type="text" id="f-slug" name="slug" maxlength="220" placeholder="e.g. post-covid-19-green-recovery" />
+
+        <label for="f-excerpt">Excerpt <small>(teaser shown on the card)</small></label>
+        <textarea id="f-excerpt" name="excerpt" maxlength="500" style="min-height:90px"></textarea>
+
+        <label for="f-body">Body</label>
+        <textarea id="f-body" name="body" style="min-height:200px"></textarea>
+
+        <div class="form-grid">
+          <div>
+            <label for="f-cover">Cover image path</label>
+            <input type="text" id="f-cover" name="cover_image" maxlength="300" placeholder="images/gallery/amazon-ride-2023/photo-010.jpg" />
+          </div>
+          <div>
+            <label for="f-author">Author</label>
+            <input type="text" id="f-author" name="author" maxlength="120" placeholder="Cycology" />
+          </div>
+          <div>
+            <label for="f-status">Status</label>
+            <select id="f-status" name="status">
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
+            </select>
+          </div>
+          <div>
+            <label for="f-date">Publish date</label>
+            <input type="date" id="f-date" name="published_at" />
+          </div>
+        </div>
+
+        <p class="admin-note admin-error" id="editor-msg" role="alert"></p>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary" id="btn-save">Save</button>
+          <button type="button" class="btn btn-dark" id="btn-cancel">Cancel</button>
+        </div>
+      </form>
+    </dialog>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/main.js" defer></script>
+  <script src="../js/admin-publications.js" defer></script>
+</body>
+</html>
