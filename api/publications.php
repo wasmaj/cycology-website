@@ -163,6 +163,23 @@ function fetch_one($db, $column, $value) {
     return $st->fetch();
 }
 
+/**
+ * MySQL in non-strict mode silently truncates text that is longer than the
+ * column allows (e.g. if `body` was created as VARCHAR(255) instead of
+ * MEDIUMTEXT). Compare what we sent with what was stored and shout if they
+ * differ, so the admin sees an error instead of a chopped article.
+ */
+function assert_not_truncated($sent, $stored) {
+    foreach (array('body', 'excerpt', 'title') as $f) {
+        if (!isset($sent[$f]) || $sent[$f] === null) continue;
+        if (strlen((string)$stored[$f]) < strlen((string)$sent[$f])) {
+            fail("The $f was cut short by the database (column too small). Run in phpMyAdmin: "
+               . "ALTER TABLE publications MODIFY body MEDIUMTEXT NULL, MODIFY excerpt VARCHAR(500) NOT NULL DEFAULT '', MODIFY title VARCHAR(200) NOT NULL;", 500,
+                 array('field' => $f, 'sent' => strlen($sent[$f]), 'stored' => strlen((string)$stored[$f])));
+        }
+    }
+}
+
 function id_from_request($body) {
     if (isset($_GET['id']))  return (int)$_GET['id'];
     if (isset($body['id']))  return (int)$body['id'];
@@ -213,7 +230,9 @@ if ($method === 'POST') {
              VALUES (' . implode(', ', array_fill(0, count($cols), '?')) . ')';
     $db->prepare($sql)->execute(array_values($vals));
 
-    respond(fetch_one($db, 'id', (int)$db->lastInsertId()), 201);
+    $row = fetch_one($db, 'id', (int)$db->lastInsertId());
+    assert_not_truncated($vals, $row);
+    respond($row, 201);
 }
 
 // =========================================================
@@ -249,7 +268,9 @@ if ($method === 'PUT') {
     $params[] = $id;
     $db->prepare('UPDATE publications SET ' . implode(', ', $set) . ' WHERE id = ?')->execute($params);
 
-    respond(fetch_one($db, 'id', $id));
+    $row = fetch_one($db, 'id', $id);
+    assert_not_truncated($vals, $row);
+    respond($row);
 }
 
 // =========================================================
