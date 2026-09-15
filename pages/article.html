@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Article — Cycology Cycling Club</title>
+  <meta name="description" content="News, advocacy work, ride reports and reflections from the Cycology Cycling Club community." />
+  <meta name="theme-color" content="#D60B52" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='none' stroke='%23FFD744' stroke-width='10'/><circle cx='50' cy='50' r='22' fill='%23D60B52'/><circle cx='50' cy='50' r='6' fill='%23FFD744'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main id="main">
+    <!-- Everything below is filled in by js/article.js from
+         /api/publications.php?slug=<slug> (the ?slug= in this page's URL). -->
+    <header class="page-header">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a> <span>/</span>
+          <a href="blog.html">Blog</a> <span>/</span>
+          <span aria-current="page" id="crumb-title">Article</span>
+        </nav>
+        <h1 id="article-title">Loading…</h1>
+        <p class="article-meta" id="article-meta"></p>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="container">
+        <article class="article" id="article">
+          <p class="gallery-empty gallery-loading">Loading article…</p>
+        </article>
+        <p class="article-back"><a class="btn btn-dark" href="blog.html">← All articles</a></p>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/main.js" defer></script>
+  <script src="../js/article.js" defer></script>
+</body>
+</html>

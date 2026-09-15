@@ -180,6 +180,8 @@
         if (el.name && row[el.name] != null) el.value = row[el.name];
       }
     }
+    refreshPreview();
+    note(uploadMsg, '');
     if (typeof editor.showModal === 'function') editor.showModal();
     else editor.setAttribute('open', '');
     $('#f-title').focus();
@@ -188,6 +190,52 @@
     if (typeof editor.close === 'function') editor.close();
     else editor.removeAttribute('open');
   }
+
+  // ---- Cover image: preview / upload / clear ----
+  const coverInput   = $('#f-cover');
+  const uploadInput  = $('#f-upload');
+  const uploadMsg    = $('#upload-msg');
+  const previewImg   = $('#cover-preview-img');
+  const previewEmpty = $('#cover-preview-empty');
+
+  function coverSrc(path) {
+    if (!path) return '';
+    return /^(https?:)?\/\//.test(path) ? path : ROOT + path.replace(/^\/+/, '');
+  }
+  function refreshPreview() {
+    const path = coverInput.value.trim();
+    previewImg.hidden   = !path;
+    previewEmpty.hidden = !!path;
+    previewImg.src      = path ? coverSrc(path) : '';
+  }
+  coverInput.addEventListener('input', refreshPreview);
+  previewImg.addEventListener('error', () => { previewImg.hidden = true; previewEmpty.hidden = false; previewEmpty.textContent = 'Image not found at that path'; });
+  previewImg.addEventListener('load',  () => { previewEmpty.textContent = 'No image'; });
+
+  $('#btn-cover-clear').addEventListener('click', () => { coverInput.value = ''; refreshPreview(); note(uploadMsg, ''); });
+
+  uploadInput.addEventListener('change', async () => {
+    const file = uploadInput.files && uploadInput.files[0];
+    if (!file) return;
+    const fd = new FormData();
+    fd.append('image', file);
+    fd.append('name', $('#f-slug').value.trim() || $('#f-title').value.trim() || 'cover');
+    note(uploadMsg, 'Uploading ' + file.name + '…');
+    btnSave.disabled = true;
+    try {
+      const res  = await fetch(ROOT + 'api/upload.php', { method: 'POST', headers: { 'X-Admin-Token': token }, body: fd });
+      const data = await res.json().catch(() => ({ error: 'Server returned an invalid response' }));
+      if (!res.ok) throw new Error(data.error || ('Upload failed (' + res.status + ')'));
+      coverInput.value = data.path;
+      refreshPreview();
+      note(uploadMsg, 'Uploaded — click Save to keep it.');
+    } catch (err) {
+      note(uploadMsg, err.message, true);
+    } finally {
+      btnSave.disabled = false;
+      uploadInput.value = '';
+    }
+  });
 
   $('#btn-new').addEventListener('click', () => openEditor(null));
   $('#btn-cancel').addEventListener('click', closeEditor);

@@ -37,16 +37,18 @@
   }
 
   function card(p) {
+    const href  = 'article.html?slug=' + encodeURIComponent(p.slug);
     const media = p.cover_image
-      ? `<div class="card-media"><img src="${esc(coverSrc(p.cover_image))}" alt="" loading="lazy" /></div>`
+      ? `<div class="card-media"><a href="${href}" tabindex="-1" aria-hidden="true"><img src="${esc(coverSrc(p.cover_image))}" alt="" loading="lazy" /></a></div>`
       : `<div class="card-media" aria-hidden="true"></div>`;
     return `
       <article class="card reveal is-visible">
         ${media}
         <div class="card-body">
           <span class="card-meta">${esc(formatDate(p.published_at))}</span>
-          <h3>${esc(p.title)}</h3>
+          <h3><a class="card-title-link" href="${href}">${esc(p.title)}</a></h3>
           ${p.excerpt ? `<p>${esc(p.excerpt)}</p>` : ''}
+          <a class="card-link" href="${href}">Read more →</a>
         </div>
       </article>`;
   }

@@ -196,6 +196,8 @@ instead of hand-editing `pages/blog.html`. Three pieces make this work:
 | `api/publications.php` | JSON CRUD endpoint — create / read / update / delete rows |
 | `pages/admin-publications.html` + `js/admin-publications.js` | Admin screen: table of posts with New / Edit / Publish / Delete |
 | `js/blog.js` | Loads the public blog page from the table (published posts, newest first) |
+| `pages/article.html` + `js/article.js` | Full-article page — `article.html?slug=<slug>` — linked from every blog card |
+| `api/upload.php` | Image upload (admin only) → saves to `images/publications/` |
 
 ### One-time setup (cPanel)
 
@@ -225,6 +227,22 @@ DELETE /api/publications.php?id=7         delete                       [admin]
 Fields: `title` (required), `slug` (auto-generated from the title if blank),
 `excerpt`, `body`, `cover_image` (path relative to site root),
 `author`, `status` (`draft` | `published`), `published_at` (`YYYY-MM-DD`).
+
+### Writing an article
+
+In the admin screen, **Body** is plain text: leave a blank line between
+paragraphs, single line breaks are kept, and any `https://…` URL becomes a
+link. HTML is shown literally, not rendered. The **Excerpt** appears on the
+blog card and as the bold lead line on the article page.
+
+### Changing a post's picture
+
+Open the post → **Upload image** (JPG/PNG/WebP/GIF, max 5 MB). The file is
+saved to `images/publications/` with a generated name and the path is filled
+in for you — click **Save** to keep it. You can also type the path of any
+existing image on the site (e.g. `images/gallery/amazon-ride-2023/photo-010.jpg`)
+or **Remove** to clear it. Make sure `images/publications/` is writable
+(permission `755`) on the host.
 
 Admin routes need the header `X-Admin-Token: <token>`. If the host strips
 custom headers, send `?token=<token>` instead; if it blocks PUT/DELETE, POST
