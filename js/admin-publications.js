@@ -4,28 +4,23 @@
    the `publications` database table with create / edit / delete,
    talking to /api/publications.php.
 
-   The admin token is kept in sessionStorage so it survives a page
-   refresh but is forgotten when the tab is closed. Nothing here is
-   secret — the server enforces the token on every write.
+   Access is a signed-in admin session (pages/admin-login.html);
+   admin-auth.js redirects here to the login page when the session
+   has expired. The server re-checks on every request.
    ========================================================= */
 
 (function () {
   'use strict';
 
-  const ROOT     = location.pathname.includes('/pages/') ? '../' : '';
-  const ENDPOINT = ROOT + 'api/publications.php';
-  const TOKEN_KEY = 'cycology.adminToken';
+  const A        = window.CycologyAdmin;
+  const ROOT     = A.ROOT;
+  const ENDPOINT = 'api/publications.php';
 
   const $ = (sel, ctx) => (ctx || document).querySelector(sel);
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   // ---- DOM ----
-  const authSection  = $('#auth-section');
-  const panelSection = $('#panel-section');
-  const tokenForm    = $('#token-form');
-  const tokenInput   = $('#admin-token');
-  const authMsg      = $('#auth-msg');
   const panelMsg     = $('#panel-msg');
   const tbody        = $('#pub-table tbody');
   const countEl      = $('#pub-count');
@@ -35,76 +30,15 @@
   const editorMsg    = $('#editor-msg');
   const btnSave      = $('#btn-save');
 
-  let token = '';
-  let rows  = [];
+  let rows = [];
 
-  // ---- API helper ----
-  async function api(method, query, body) {
-    const opts = { method, headers: { 'X-Admin-Token': token } };
-    if (body) {
-      opts.headers['Content-Type'] = 'application/json';
-      opts.body = JSON.stringify(body);
-    }
-    const res  = await fetch(ENDPOINT + (query || ''), opts);
-    let data;
-    try { data = await res.json(); } catch (_) { data = { error: 'Server returned an invalid response' }; }
-    if (!res.ok) {
-      const err = new Error(data.error || ('Request failed (' + res.status + ')'));
-      err.status = res.status;
-      err.fields = data.fields || null;
-      throw err;
-    }
-    return data;
-  }
+  // Thin wrapper over the shared helper so the calls below stay short.
+  const api = (method, query, body) => A.api(method, ENDPOINT + (query || ''), body);
 
   function note(el, text, isError) {
     el.textContent = text || '';
     el.classList.toggle('admin-error', !!isError);
   }
-
-  // ---- Auth ----
-  async function unlock(candidate) {
-    token = candidate;
-    note(authMsg, 'Checking…');
-    try {
-      // ?all=1 only returns drafts for a valid token; a bad token still
-      // succeeds (public list), so probe with a write-only route instead.
-      await api('PUT', '?id=0');           // → 400 "Missing id" when the token is valid, 401 when not
-    } catch (err) {
-      if (err.status === 401) {
-        token = '';
-        try { sessionStorage.removeItem(TOKEN_KEY); } catch (_) {}
-        note(authMsg, 'That token was rejected. Check admin_token in api/config.php.', true);
-        return false;
-      }
-      if (err.status !== 400) {            // DB / config problems surface here
-        note(authMsg, err.message, true);
-        return false;
-      }
-    }
-    try { sessionStorage.setItem(TOKEN_KEY, token); } catch (_) {}
-    note(authMsg, '');
-    authSection.hidden  = true;
-    panelSection.hidden = false;
-    await load();
-    return true;
-  }
-
-  function lock() {
-    token = '';
-    try { sessionStorage.removeItem(TOKEN_KEY); } catch (_) {}
-    tokenInput.value = '';
-    panelSection.hidden = true;
-    authSection.hidden  = false;
-    tokenInput.focus();
-  }
-
-  tokenForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const t = tokenInput.value.trim();
-    if (t) unlock(t);
-  });
-  $('#btn-lock').addEventListener('click', lock);
 
   // ---- Table ----
   async function load() {
@@ -223,7 +157,7 @@
     note(uploadMsg, 'Uploading ' + file.name + '…');
     btnSave.disabled = true;
     try {
-      const res  = await fetch(ROOT + 'api/upload.php', { method: 'POST', headers: { 'X-Admin-Token': token }, body: fd });
+      const res  = await fetch(ROOT + 'api/upload.php', { method: 'POST', credentials: 'same-origin', body: fd });
       const data = await res.json().catch(() => ({ error: 'Server returned an invalid response' }));
       if (!res.ok) throw new Error(data.error || ('Upload failed (' + res.status + ')'));
       coverInput.value = data.path;
@@ -266,8 +200,10 @@
     }
   });
 
-  // ---- Boot: reuse a token from this tab, if any ----
-  let saved = '';
-  try { saved = sessionStorage.getItem(TOKEN_KEY) || ''; } catch (_) {}
-  if (saved) unlock(saved); else tokenInput.focus();
+  // ---- Boot ----
+  (async () => {
+    await A.guard();          // redirects to the login page when signed out
+    A.shell('posts');
+    load();
+  })();
 })();

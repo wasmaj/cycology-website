@@ -39,16 +39,12 @@ function respond($data, $code = 200) {
 function fail($message, $code = 400) { respond(array('error' => $message), $code); }
 
 // ---------- auth ----------
-$configFile = __DIR__ . '/config.php';
-if (!is_readable($configFile)) fail('api/config.php is missing', 500);
-$config = require $configFile;
+require_once __DIR__ . '/db.php';
+$config = cycology_config();
 
-$token = isset($_SERVER['HTTP_X_ADMIN_TOKEN']) ? $_SERVER['HTTP_X_ADMIN_TOKEN']
-       : (isset($_POST['_token']) ? $_POST['_token'] : (isset($_GET['token']) ? $_GET['token'] : ''));
-if ($config['admin_token'] === '' || $config['admin_token'] === 'CHANGE-ME-TO-A-LONG-RANDOM-STRING'
-    || !hash_equals((string)$config['admin_token'], (string)$token)) {
-    fail('Unauthorized — a valid X-Admin-Token header is required', 401);
-}
+// A signed-in dashboard session OR the admin token (see api/db.php).
+if (isset($_POST['_token'])) $_GET['token'] = $_POST['_token'];
+if (!cycology_is_admin()) fail('Unauthorized — please sign in to the admin dashboard', 401);
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') fail('Method not allowed', 405);
 
 // ---------- validate the upload ----------

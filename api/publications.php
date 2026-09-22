@@ -57,6 +57,8 @@ function read_json_body() {
     return $data;
 }
 
+require_once __DIR__ . '/db.php';
+
 // ---------- config + DB ----------
 $configFile = __DIR__ . '/config.php';
 if (!is_readable($configFile)) {
@@ -89,14 +91,12 @@ if ($method === 'POST' && !empty($body['_method'])) {
 if ($method === 'PATCH') $method = 'PUT';
 
 // ---------- auth ----------
-$token = '';
-if (isset($_SERVER['HTTP_X_ADMIN_TOKEN']))   $token = $_SERVER['HTTP_X_ADMIN_TOKEN'];
-elseif (isset($_GET['token']))               $token = $_GET['token'];
-elseif (isset($body['_token']))              { $token = $body['_token']; unset($body['_token']); }
+// A token in the JSON body is also accepted (for hosts that strip headers);
+// put it where cycology_is_admin() will find it before asking.
+if (isset($body['_token'])) { $_GET['token'] = $body['_token']; unset($body['_token']); }
 
-$isAdmin = ($config['admin_token'] !== ''
-            && $config['admin_token'] !== 'CHANGE-ME-TO-A-LONG-RANDOM-STRING'
-            && hash_equals((string)$config['admin_token'], (string)$token));
+// A signed-in dashboard session OR the admin token (see api/db.php).
+$isAdmin = cycology_is_admin();
 
 function require_admin() {
     global $isAdmin;

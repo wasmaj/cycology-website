@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard — Cycology Cycling Club</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#D60B52" />
+  <link rel="icon" href="../assets/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+  <div id="admin-shell"></div>
+
+  <main id="main">
+    <header class="page-header page-header--admin">
+      <div class="container">
+        <h1 id="greeting">Dashboard</h1>
+        <p style="color:#d6dbe2; margin:0;" id="greeting-sub">Everything you can manage on the Cycology site.</p>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="container">
+        <p class="admin-note" id="dash-msg" role="status">Loading…</p>
+
+        <!-- Anything still to set up -->
+        <div id="setup-warnings"></div>
+
+        <!-- Headline numbers -->
+        <div class="stat-grid" id="stats"></div>
+
+        <!-- Quick actions -->
+        <h2 class="section-title" style="margin-top:2.5rem">Quick actions</h2>
+        <div class="action-grid">
+          <a class="action-card" href="admin-publications.html">
+            <span class="action-icon" aria-hidden="true">✍️</span>
+            <span class="action-body">
+              <strong>Write a blog post</strong>
+              <span>Create, edit, publish or unpublish articles.</span>
+            </span>
+          </a>
+          <a class="action-card" href="admin-submissions.html">
+            <span class="action-icon" aria-hidden="true">📥</span>
+            <span class="action-body">
+              <strong>Read form submissions</strong>
+              <span>Contact messages and membership applications.</span>
+            </span>
+          </a>
+          <a class="action-card" href="admin-submissions.html#export">
+            <span class="action-icon" aria-hidden="true">📊</span>
+            <span class="action-body">
+              <strong>Download CSV / Excel</strong>
+              <span>Export submissions for spreadsheets or mail-outs.</span>
+            </span>
+          </a>
+          <a class="action-card" href="blog.html" target="_blank" rel="noopener">
+            <span class="action-icon" aria-hidden="true">🌍</span>
+            <span class="action-body">
+              <strong>View the live blog</strong>
+              <span>See what visitors see, in a new tab.</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- Recent activity -->
+        <div class="dash-columns">
+          <div>
+            <div class="dash-head">
+              <h2 class="section-title" style="margin:0">Latest submissions</h2>
+              <a class="card-link" href="admin-submissions.html">See all →</a>
+            </div>
+            <div id="recent-submissions" class="dash-list"></div>
+          </div>
+          <div>
+            <div class="dash-head">
+              <h2 class="section-title" style="margin:0">Recent posts</h2>
+              <a class="card-link" href="admin-publications.html">Manage →</a>
+            </div>
+            <div id="recent-posts" class="dash-list"></div>
+          </div>
+        </div>
+
+        <!-- Account -->
+        <h2 class="section-title" style="margin-top:2.5rem">Your account</h2>
+        <form class="form" id="password-form" autocomplete="off" style="max-width:520px">
+          <div>
+            <label for="p-current">Current password</label>
+            <input id="p-current" type="password" autocomplete="current-password" required />
+          </div>
+          <div>
+            <label for="p-new">New password <small>(10 characters or more)</small></label>
+            <input id="p-new" type="password" autocomplete="new-password" minlength="10" required />
+          </div>
+          <div class="actions">
+            <button class="btn btn-dark" type="submit" id="p-btn">Change password</button>
+          </div>
+          <p class="admin-note" id="p-msg" role="alert"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/main.js" defer></script>
+  <script src="../js/admin-auth.js" defer></script>
+  <script src="../js/admin-dashboard.js" defer></script>
+</body>
+</html>

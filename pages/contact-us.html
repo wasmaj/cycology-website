@@ -6,7 +6,8 @@
   <title>Contact Us — Cycology Cycling Club</title>
   <meta name="description" content="Get in touch with Cycology Cycling Club — for membership enquiries, partnership opportunities, sponsorship and press." />
   <meta name="theme-color" content="#D60B52" />
-  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='none' stroke='%23FFD744' stroke-width='10'/><circle cx='50' cy='50' r='22' fill='%23D60B52'/><circle cx='50' cy='50' r='6' fill='%23FFD744'/></svg>" />
+  <link rel="icon" href="../assets/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet" />
@@ -35,7 +36,7 @@
             <h2 style="margin-bottom: .25rem;">We'll get back to you.</h2>
             <p style="margin-bottom: 2rem; color: var(--color-muted);">Fill in the form and a member of the executive team will respond within a few working days.</p>
 
-            <form class="form" data-fake-submit novalidate>
+            <form class="form" data-mail-form="contact" novalidate>
               <div class="form-grid">
                 <div>
                   <label for="name">Your name <span class="req">*</span></label>
@@ -66,6 +67,11 @@
                 <label for="message">Message <span class="req">*</span></label>
                 <textarea id="message" name="message" required></textarea>
               </div>
+              <!-- Spam trap: hidden from people, irresistible to bots. -->
+              <p class="hp-field" aria-hidden="true">
+                <label for="website">Leave this field empty</label>
+                <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+              </p>
               <div class="actions">
                 <button class="btn btn-primary" type="submit">Send Message</button>
               </div>

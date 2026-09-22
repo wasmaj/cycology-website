@@ -6,7 +6,8 @@
   <title>Manage Publications — Cycology Cycling Club</title>
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#D60B52" />
-  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='none' stroke='%23FFD744' stroke-width='10'/><circle cx='50' cy='50' r='22' fill='%23D60B52'/><circle cx='50' cy='50' r='6' fill='%23FFD744'/></svg>" />
+  <link rel="icon" href="../assets/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet" />
@@ -14,9 +15,10 @@
 </head>
 <body>
   <div id="site-header"></div>
+  <div id="admin-shell"></div>
 
   <main id="main">
-    <header class="page-header">
+    <header class="page-header page-header--admin">
       <div class="container">
         <nav class="crumbs" aria-label="Breadcrumb">
           <a href="../index.html">Home</a> <span>/</span>
@@ -27,28 +29,12 @@
       </div>
     </header>
 
-    <!-- Step 1: admin token (kept in this browser tab only) -->
-    <section class="section admin-auth" id="auth-section">
-      <div class="container">
-        <form class="form" id="token-form" autocomplete="off">
-          <label for="admin-token">Admin token <span class="req">*</span></label>
-          <input type="password" id="admin-token" placeholder="Paste the admin_token from api/config.php" required />
-          <div class="actions">
-            <button type="submit" class="btn btn-primary">Unlock</button>
-          </div>
-          <p class="admin-note" id="auth-msg" role="status"></p>
-        </form>
-      </div>
-    </section>
-
-    <!-- Step 2: table + editor -->
-    <section class="section admin-panel" id="panel-section" hidden>
+    <section class="section admin-panel" id="panel-section">
       <div class="container">
         <div class="admin-toolbar">
           <h2 class="section-title" style="margin:0">Publications <span class="admin-count" id="pub-count"></span></h2>
           <div class="actions">
             <button type="button" class="btn btn-primary" id="btn-new">+ New publication</button>
-            <button type="button" class="btn btn-dark" id="btn-lock">Lock</button>
           </div>
         </div>
         <p class="admin-note" id="panel-msg" role="status"></p>
@@ -136,6 +122,7 @@
 
   <div id="site-footer"></div>
   <script src="../js/main.js" defer></script>
+  <script src="../js/admin-auth.js" defer></script>
   <script src="../js/admin-publications.js" defer></script>
 </body>
 </html>

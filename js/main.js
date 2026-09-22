@@ -23,7 +23,7 @@
   <header class="site-header" role="banner">
     <div class="container nav-wrap">
       <a class="brand" href="${ROOT}index.html" aria-label="Cycology home">
-        <img class="brand-mark-img" src="${ROOT}assets/logo-mark.svg" alt="" aria-hidden="true" width="64" height="30" />
+        <img class="brand-mark-img" src="${ROOT}assets/logo-mark.png" alt="" aria-hidden="true" width="108" height="51" />
         <span class="brand-text">CYCOLOGY</span>
       </a>
 
@@ -92,7 +92,7 @@
       <div class="footer-grid">
         <div>
           <a class="brand brand--footer" href="${ROOT}index.html" aria-label="Cycology home">
-            <img class="brand-logo-footer" src="${ROOT}assets/logo-light.svg" alt="Cycology" width="180" height="113" />
+            <img class="brand-logo-footer" src="${ROOT}assets/cycology-logo.png" alt="Cycology" width="109" height="72" />
           </a>
           <p>A not-for-profit cycling club established in 2011. Our vision is to create a global platform for promoting cycling as a tool for a healthy lifestyle and social development.</p>
           <div class="social-row" aria-label="Social media">
@@ -394,8 +394,53 @@
     container.innerHTML = html;
   }
 
-  // ---------- Contact form (client-side only) ----------
+  // ---------- Forms ----------
   function bindForms() {
+    // Forms that email the club. data-mail-form names which one it is
+    // ("contact" or "membership"); api/send-form.php maps that to the
+    // recipient address — the address is never exposed in the page.
+    $$('form[data-mail-form]').forEach((form) => {
+      const note = form.querySelector('.form-note');
+      const btn  = form.querySelector('button[type="submit"]');
+      const say  = (msg, isError) => {
+        if (!note) return;
+        note.textContent = msg;
+        note.style.color = isError ? 'var(--brand-pink)' : 'var(--color-muted)';
+      };
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        // The forms carry `novalidate` so the browser doesn't block us;
+        // run its checks ourselves and show the native messages.
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+
+        const payload = { form: form.dataset.mailForm };
+        new FormData(form).forEach((v, k) => { payload[k] = v; });
+
+        const label = btn ? btn.textContent : '';
+        if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+        say('');
+
+        try {
+          const res  = await fetch(ROOT + 'api/send-form.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json().catch(() => ({ error: 'Unexpected response from the server' }));
+          if (!res.ok) throw new Error(data.fields ? Object.values(data.fields).join(' · ') : (data.error || 'Something went wrong'));
+
+          form.reset();
+          if (btn) btn.textContent = 'Sent ✓';
+          say('Thanks — your message is on its way. We’ll be in touch shortly.');
+        } catch (err) {
+          if (btn) { btn.disabled = false; btn.textContent = label; }
+          say(err.message, true);
+        }
+      });
+    });
+
+    // Forms with no backend yet (sign-in, waiver) — acknowledge only.
     $$('form[data-fake-submit]').forEach((form) => {
       form.addEventListener('submit', (e) => {
         e.preventDefault();

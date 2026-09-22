@@ -6,7 +6,8 @@
   <title>Become a Member — Cycology Cycling Club</title>
   <meta name="description" content="Apply to become a member of Cycology Cycling Club. Open to any professional with an interest in cycling." />
   <meta name="theme-color" content="#D60B52" />
-  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='none' stroke='%23FFD744' stroke-width='10'/><circle cx='50' cy='50' r='22' fill='%23D60B52'/><circle cx='50' cy='50' r='6' fill='%23FFD744'/></svg>" />
+  <link rel="icon" href="../assets/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet" />
@@ -35,7 +36,7 @@
             <h2>Tell us about yourself.</h2>
             <p style="color: var(--color-muted); margin-bottom: 2rem;">All fields marked <span class="req">*</span> are required.</p>
 
-            <form class="form" data-fake-submit novalidate>
+            <form class="form" data-mail-form="membership" novalidate>
               <div class="form-grid">
                 <div>
                   <label for="firstName">First name <span class="req">*</span></label>
@@ -115,11 +116,16 @@
               </div>
               <div>
                 <label style="font-weight: 500;">
-                  <input type="checkbox" required style="width:auto; margin-right:.5rem;" />
+                  <input type="checkbox" name="agreement" value="Yes" required style="width:auto; margin-right:.5rem;" />
                   I agree to abide by the club's <a href="code-of-conduct.html">Code of Conduct</a> and <a href="safety.html">Safety Rules</a>. <span class="req">*</span>
                 </label>
               </div>
 
+              <!-- Spam trap: hidden from people, irresistible to bots. -->
+              <p class="hp-field" aria-hidden="true">
+                <label for="website">Leave this field empty</label>
+                <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+              </p>
               <div class="actions">
                 <button class="btn btn-primary" type="submit">Submit Application</button>
                 <a class="btn btn-ghost" href="../index.html">Cancel</a>

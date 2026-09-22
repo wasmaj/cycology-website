@@ -30,6 +30,8 @@ No build step, no Node.js — just upload the folder to any shared host and you'
 │   ├── contact-us.html
 │   ├── enquiry-form.html   ← Become a Member
 │   ├── sign-in.html
+│   ├── admin-login.html    ← Admin sign-in
+│   ├── admin.html          ← Admin dashboard
 │   └── waiver-form.html
 ├── /css/
 │   └── styles.css          ← All styling (single file)
@@ -47,7 +49,7 @@ No build step, no Node.js — just upload the folder to any shared host and you'
 │       ├── /cycolobration-2025/
 │       ├── /amazon-ride-2023/
 │       └── /independence-day-ride/
-├── /assets/                ← For favicons, fonts, logos
+├── /assets/                ← Logo files + favicons (see assets/README.md)
 └── README.md               ← This file
 ```
 
@@ -102,6 +104,7 @@ v2 (August 2018)**:
 | The top navigation menu | `js/main.js` → `HEADER_HTML` constant |
 | The footer (links, social, copyright) | `js/main.js` → `FOOTER_HTML` constant |
 | Brand colours, fonts, spacing | `css/styles.css` → `:root { … }` at the top |
+| Site logo (header / footer / favicon) | `assets/` — see `assets/README.md` |
 | Homepage hero, sections, CTA | `index.html` |
 | About text, mission, vision | `pages/about-us.html` |
 | CSR partners and timeline | `pages/csr.html` |
@@ -110,10 +113,11 @@ v2 (August 2018)**:
 | Safety rules and gear list | `pages/safety.html` |
 | Code of Conduct | `pages/code-of-conduct.html` |
 | FAQ Q&A items | `pages/faq.html` |
-| Blog post cards | Database — manage at `pages/admin-publications.html` (see §4) |
+| Blog post cards | Database — manage in the admin dashboard (see §4) |
 | Gallery photos | `pages/gallery.html` (swap `<img src="…">` to your file in `/images/`) |
 | Video thumbnails (or embed YouTube) | `pages/videos.html` |
 | Contact form / waiver / sign-in / enquiry | The matching `.html` file in `/pages/` |
+| Where the contact & membership forms send email | `api/forms.php` → the `to` value (see §6) |
 
 ### Managing images (no-code workflow)
 
@@ -185,7 +189,54 @@ deploy to a PHP host.
 
 ---
 
-## 4. Publications (blog posts) in a database
+## 4. The admin dashboard
+
+Everything the club manages day to day lives behind one sign-in at
+**`/pages/admin-login.html`**:
+
+| Screen | What it does |
+|---|---|
+| `admin.html` | Dashboard — headline numbers, recent activity, quick actions, change password |
+| `admin-publications.html` | Write, edit, publish and delete blog posts |
+| `admin-submissions.html` | Read contact / membership submissions, download CSV or Excel |
+
+### One-time setup
+
+1. **Create the database** (cPanel → MySQL® Databases) and add a user to it
+   with All Privileges.
+2. **Run the SQL files** in phpMyAdmin → your database → **SQL** tab:
+   `sql/admin-users.sql`, `sql/publications.sql`, `sql/form-submissions.sql`.
+3. **Copy** `api/config.example.php` → `api/config.php` and fill in the
+   database details. Set `admin_token` to a long random string
+   (`php -r "echo bin2hex(random_bytes(24));"`) — you use it once, in the
+   next step. `config.php` is git-ignored; upload it to the host by hand.
+4. **Open `/pages/admin-login.html`.** Because no account exists yet, it
+   offers to create the first one: paste the `admin_token` (this proves you
+   own the server), pick a username and a password of 10+ characters.
+
+From then on you just sign in with that username and password. Change the
+password any time from the bottom of the dashboard.
+
+### How the sign-in works
+
+- A normal PHP session cookie, marked `HttpOnly` and `SameSite=Strict`
+  (and `Secure` over HTTPS), so it can't be read by JavaScript or sent from
+  another site.
+- Passwords are stored as bcrypt hashes, never in plain text.
+- Ten failed attempts from one IP address locks sign-in for 15 minutes.
+- Visiting any admin page while signed out bounces you to the login screen
+  and returns you to the page you wanted once you're in.
+
+> **Forgotten password?** There's no email reset. Delete the row from the
+> `admin_users` table in phpMyAdmin — the login screen then offers the
+> first-run setup again, and you rebuild the account with the `admin_token`.
+
+> The `admin_token` still works on its own as an `X-Admin-Token` header for
+> scripts and `curl`. Treat it like a master key: keep it long and private.
+
+---
+
+## 5. Publications (blog posts) in a database
 
 Blog posts can be stored in a MySQL table and managed from the browser
 instead of hand-editing `pages/blog.html`. Three pieces make this work:
@@ -194,23 +245,15 @@ instead of hand-editing `pages/blog.html`. Three pieces make this work:
 |---|---|
 | `sql/publications.sql` | Creates the `publications` table (+ optional seed rows) |
 | `api/publications.php` | JSON CRUD endpoint — create / read / update / delete rows |
-| `pages/admin-publications.html` + `js/admin-publications.js` | Admin screen: table of posts with New / Edit / Publish / Delete |
+| `pages/admin-publications.html` + `js/admin-publications.js` | Admin screen: table of posts with New / Edit / Publish / Delete (see §4) |
 | `js/blog.js` | Loads the public blog page from the table (published posts, newest first) |
 | `pages/article.html` + `js/article.js` | Full-article page — `article.html?slug=<slug>` — linked from every blog card |
 | `api/upload.php` | Image upload (admin only) → saves to `images/publications/` |
 
 ### One-time setup (cPanel)
 
-1. **cPanel → MySQL® Databases**: create a database and a user, then add the
-   user to the database with **All Privileges**.
-2. **cPanel → phpMyAdmin**: select the database, open the **SQL** tab, paste
-   the contents of `sql/publications.sql` and click **Go**.
-3. Copy `api/config.example.php` → `api/config.php` and fill in the DB
-   host/name/user/password. Set `admin_token` to a long random string
-   (`php -r "echo bin2hex(random_bytes(24));"`). This file is git-ignored —
-   upload it to the host manually.
-4. Open `https://yourdomain/pages/admin-publications.html`, paste the admin
-   token and click **Unlock**.
+Covered by the dashboard setup in §4 — run `sql/publications.sql` along with
+the other SQL files, then sign in and open **Blog posts**.
 
 ### API reference
 
@@ -244,7 +287,8 @@ existing image on the site (e.g. `images/gallery/amazon-ride-2023/photo-010.jpg`
 or **Remove** to clear it. Make sure `images/publications/` is writable
 (permission `755`) on the host.
 
-Admin routes need the header `X-Admin-Token: <token>`. If the host strips
+Admin routes accept either a dashboard session (§4) or an
+`X-Admin-Token: <token>` header for scripts. If the host strips
 custom headers, send `?token=<token>` instead; if it blocks PUT/DELETE, POST
 with `"_method": "PUT"` (or `"DELETE"`) in the JSON body.
 
@@ -254,18 +298,95 @@ rows and builds the cards. Until the database is set up the page shows an
 
 ---
 
-## 5. Making the Forms Actually Work
+## 6. Forms
 
-All forms on the site (Contact, Enquiry, Waiver, Sign In, Newsletter) are
-client-side UI only — they show a "thanks" message but **do not send anything**.
-Easiest options to make them functional on shared hosting:
+### Contact and Membership — these send real email
 
-| Option | What it does | Cost |
+| Form | Page | Goes to |
 |---|---|---|
-| **[Formspree](https://formspree.io)** | Just change `data-fake-submit` → `action="https://formspree.io/f/yourID"`. Emails you submissions. | Free tier (50/mo) |
-| **[Getform](https://www.getform.io)** | Same idea, slightly more generous. | Free tier |
-| **cPanel `FormMail.cgi`** | Built into most cPanel hosts. `action="/cgi-sys/FormMail.cgi"` plus a `recipient` hidden field. | Free with hosting |
-| **PHP handler** | Write a small `contact.php` with `mail()` and POST to it. | Free with hosting |
+| Contact | `pages/contact-us.html` | **info@cycology.com.ng** |
+| Membership application | `pages/enquiry-form.html` | **membership@cycology.com.ng** |
+
+Both post to `api/send-form.php`, which **emails the submission AND saves it
+to the database**, then you review and download everything at
+`pages/admin-submissions.html`.
+
+| File | Purpose |
+|---|---|
+| `api/forms.php` | The form definitions — recipients, required fields, field labels |
+| `api/send-form.php` | Emails the submission and stores it |
+| `sql/form-submissions.sql` | Creates the `form_submissions` table |
+| `api/submissions.php` | Admin API: list, filter, view, delete, CSV/Excel export |
+| `pages/admin-submissions.html` + `js/admin-submissions.js` | The admin screen |
+
+Email uses PHP's `mail()` — standard on cPanel/InMotion, so there is nothing
+to install and no third-party service to pay for.
+
+**How it works:** the page only sends a form key (`contact` or `membership`).
+The endpoint looks that key up in its own `$FORMS` table to decide the
+recipient, so the addresses never appear in the page source and the script
+can't be used to email anyone else.
+
+**To change a recipient address**, edit the `to` value in the `$FORMS` array
+at the top of `api/send-form.php`.
+
+The club receives a plain-text email with every field labelled, and
+**Reply-To is set to the sender**, so hitting Reply in your mail client
+answers the person directly.
+
+### Reviewing and downloading submissions
+
+Sign in at `/pages/admin-login.html`, then open **Form submissions** from
+the admin bar (or the dashboard's quick actions).
+
+- Filter by form with the tabs, search by name / email / phone / message
+  content, or narrow to a date range.
+- **View** shows every field of one submission, with a *Reply by email*
+  button.
+- **Download CSV** opens straight in Excel, Numbers or Google Sheets (it is
+  written with a UTF-8 marker so accented names come through correctly).
+- **Download Excel** produces a real `.xlsx` with a frozen, bold header row.
+- Both downloads respect whatever filters are active, so you can export just
+  membership applications, or just last month's.
+- The **Emailed** column flags anything saved but not emailed — a quick way
+  to spot a mail outage.
+
+**One-time setup:** run `sql/form-submissions.sql` in phpMyAdmin (see §4) so
+the table exists. Until then the forms still email normally; they just aren't
+stored — and the dashboard tells you which SQL file is still missing.
+
+### If mail doesn't arrive
+
+1. Check the spam folder first — this is the usual answer.
+2. Make sure `info@` and `membership@` exist in **cPanel → Email Accounts**
+   (or are forwarders pointing somewhere real).
+3. The `From` address must be on your own domain. It defaults to
+   `no-reply@cycology.com.ng`; override it with `mail_from` in
+   `api/config.php` if you use a different domain.
+4. To see exactly what's being generated, set `mail_log` in `api/config.php`
+   to a file path — messages get written there instead of sent. Remember to
+   comment it out afterwards.
+5. For high-volume or high-deliverability needs, point the host at an SMTP
+   relay (cPanel → Email Deliverability, or a service like SendGrid).
+
+Mail and storage are independent: a submission is saved even when the email
+fails, and emailed even when the database is down. The visitor only sees an
+error if both fail — so nothing is silently lost.
+
+### Spam protection
+
+Both forms carry a hidden "website" field that people never see and bots
+fill in. When it arrives filled, the submission is silently discarded — the
+bot gets a success response so it doesn't retry another way. Add
+`class="hp-field"` markup (copy it from either form) to any new form you
+build.
+
+### Still client-side only
+
+**Waiver** and **Sign In** still just show a "thanks" message — they keep the
+`data-fake-submit` attribute. To make the Waiver email the club too, give its
+`<form>` a `data-mail-form="waiver"` attribute and add a matching `waiver`
+entry to `$FORMS` in `api/send-form.php`.
 
 For the **Sign In** flow, a static site can't authenticate users on its own.
 The simplest paths are Firebase Auth (free), Auth0, or moving the member area
@@ -273,7 +394,7 @@ to a WordPress install on the same domain at `/members/`.
 
 ---
 
-## 6. SEO Suggestions (Already Done + Future)
+## 7. SEO Suggestions (Already Done + Future)
 
 **Already in place:**
 - Unique `<title>` and `<meta description>` per page
@@ -286,20 +407,20 @@ to a WordPress install on the same domain at `/members/`.
 - Mobile-first responsive layout
 - Lazy-loaded images
 - Preconnect hints for Google Fonts
+- Real favicon + `apple-touch-icon` from the official logo
 
 **Recommended next steps:**
 1. **Add a `sitemap.xml`** at the root listing every page and submit to Google Search Console.
 2. **Add a `robots.txt`** referencing your sitemap.
 3. **Compress images** — use WebP via [Squoosh](https://squoosh.app) and aim for <150 KB per photo.
 4. **Add real Open Graph images** sized 1200×630 to `/images/og/` and update each page's `<meta property="og:image">`.
-5. **Replace the SVG-data-URI favicon** in each file with a proper `/assets/favicon.ico` plus `apple-touch-icon.png`.
-6. **Set up Google Analytics 4 or Plausible** by adding their script to `js/main.js` or before `</body>` in each page.
-7. **Verify your domain in Google Search Console** and submit the sitemap.
-8. **Add internal links** between related blog posts and pages to improve crawl depth.
+5. **Set up Google Analytics 4 or Plausible** by adding their script to `js/main.js` or before `</body>` in each page.
+6. **Verify your domain in Google Search Console** and submit the sitemap.
+7. **Add internal links** between related blog posts and pages to improve crawl depth.
 
 ---
 
-## 7. Accessibility Notes
+## 8. Accessibility Notes
 
 - All interactive elements are keyboard-navigable.
 - Focus rings use the amber accent colour for high visibility.
@@ -310,13 +431,13 @@ to a WordPress install on the same domain at `/members/`.
 
 ---
 
-## 8. Browser Support
+## 9. Browser Support
 
 Tested in modern Chrome, Edge, Firefox and Safari. Falls back gracefully in older browsers (the carousel and reveal animations degrade to plain static content; nothing is unreadable).
 
 ---
 
-## 9. Suggested UX Improvements (Optional)
+## 10. Suggested UX Improvements (Optional)
 
 Things the original site could benefit from that are easy to add later:
 
@@ -329,7 +450,7 @@ Things the original site could benefit from that are easy to add later:
 
 ---
 
-## 10. Credits
+## 11. Credits
 
 - **Fonts:** Bebas Neue + Inter via Google Fonts.
 - **Photography placeholders:** Unsplash (free for commercial use, no attribution required, but please swap with the club's own photos before launch).
