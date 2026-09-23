@@ -21,7 +21,7 @@
   function go() {
     const next = params.get('next');
     // Only ever forward to a page in this folder — never an absolute URL.
-    const safe = next && /^[a-z0-9-]+\.html(\?[^#]*)?$/i.test(next) ? next : 'admin.html';
+    const safe = next && /^[a-z0-9-]+(\.html)?(\?[^#]*)?$/i.test(next) ? next : 'admin.html';
     location.replace(safe);
   }
 

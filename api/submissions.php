@@ -33,7 +33,7 @@ function fail($message, $code = 400) { respond(array('error' => $message), $code
 if (!cycology_is_admin()) fail('Unauthorized — a valid admin token is required', 401);
 
 $db = cycology_db();
-if (!$db) fail('Database not configured — see README §4', 500);
+if (!$db) fail('Database not configured — see README §5', 500);
 
 // A missing table is the most common setup slip; say so plainly.
 try {

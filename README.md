@@ -11,6 +11,7 @@ No build step, no Node.js — just upload the folder to any shared host and you'
 ```
 /Cycology-website
 ├── index.html              ← Home page
+├── .htaccess               ← Clean URLs + caching (hidden file — see §3)
 ├── gallery.php             ← Tiny PHP scanner that powers the auto gallery
 ├── /pages/                 ← All internal pages
 │   ├── about-us.html
@@ -62,7 +63,8 @@ No build step, no Node.js — just upload the folder to any shared host and you'
 3. Navigate to `public_html/` (this is the document root your domain serves).
 4. *(Optional, recommended)* if you have an existing site, back it up first: select all files → **Compress** → **.zip** → download.
 5. **Delete the default `index.html`** that InMotion ships with (only if there's no other site there).
-6. Back on your computer, **zip the entire `Cycology-website` folder contents** (NOT the folder itself — just everything inside it: `index.html`, `/pages/`, `/css/`, `/js/`, `/images/`, `/assets/`).
+6. Back on your computer, **zip the entire `Cycology-website` folder contents** (NOT the folder itself — just everything inside it: `index.html`, `/pages/`, `/css/`, `/js/`, `/images/`, `/assets/`, `/api/`).
+   ⚠️ **Include `.htaccess`.** Windows' built-in "Send to → Compressed folder" skips dotfiles — use 7-Zip, or upload `.htaccess` separately afterwards (see §3). Without it the clean URLs won't work.
 7. In cPanel File Manager, click **Upload** → drop the zip in → wait for it to finish.
 8. Back in File Manager, right-click the zip → **Extract** → into `public_html/`.
 9. Delete the zip when extraction is complete.
@@ -72,12 +74,64 @@ No build step, no Node.js — just upload the folder to any shared host and you'
 
 1. Get your FTP credentials from cPanel → **FTP Accounts**.
 2. Connect via your FTP client.
-3. Drag the contents of `Cycology-website` into `/public_html/`.
+3. Drag the contents of `Cycology-website` into `/public_html/` — turn on your client's "show hidden files" so `.htaccess` goes too.
 4. Done.
 
 ---
 
-## 3. Where to Edit Content
+## 3. Clean URLs (no ".html" in the address bar)
+
+`/.htaccess` gives every page a tidy, extension-less address:
+
+| Old address | New address |
+|---|---|
+| `/index.html` | `/` |
+| `/pages/about-us.html` | `/about-us` |
+| `/pages/blog.html` | `/blog` |
+| `/pages/article.html?slug=in-the-zone` | `/article?slug=in-the-zone` |
+
+The old `.html` addresses still work — they permanently redirect (301) to the
+new ones, so existing links, bookmarks and Google results keep working and
+pass their search ranking to the clean address.
+
+**Nothing moves.** The files stay in `/pages/` exactly as before, so opening
+them straight from disk while you edit still works.
+
+### Getting it onto the host
+
+`.htaccess` starts with a dot, which makes it invisible by default:
+
+- **cPanel File Manager:** click **Settings** (top right) → tick
+  **Show Hidden Files (dotfiles)** → **Save**, then upload it into
+  `public_html/`.
+- **Zipping the site first:** Windows Explorer's "Send to → Compressed
+  folder" silently skips dotfiles. Either upload `.htaccess` on its own
+  afterwards, or zip with 7-Zip/the cPanel File Manager, which keep it.
+- **FTP:** most clients hide dotfiles too — turn on "show hidden files" in
+  the client's settings.
+
+After uploading, visit `https://cycology.com.ng/about-us`. If you get a 404,
+mod_rewrite is off — ask the host to enable it (it is on by default at
+InMotion).
+
+### If you add a new page
+
+Drop it in `/pages/` as usual. `/pages/new-page.html` automatically becomes
+`/new-page` — there is no list to update. Only a page whose `.html` file
+really exists gets a clean URL; anything else still returns a normal 404.
+
+### Internal links still say .html
+
+Links inside the pages (and the nav in `js/main.js`) still point at
+`.html`, and the redirect sends visitors on to the clean address. That
+costs one extra hop per click, and it is deliberate: if the host ever lacks
+mod_rewrite, the site keeps working instead of every link breaking. Once
+you've confirmed the clean URLs work live, the links can be rewritten to
+point straight at them.
+
+---
+
+## 4. Where to Edit Content
 
 The site is intentionally simple — every page is a single `.html` file you can edit in any code editor (VS Code, Notepad++, even Notepad).
 
@@ -113,11 +167,11 @@ v2 (August 2018)**:
 | Safety rules and gear list | `pages/safety.html` |
 | Code of Conduct | `pages/code-of-conduct.html` |
 | FAQ Q&A items | `pages/faq.html` |
-| Blog post cards | Database — manage in the admin dashboard (see §4) |
+| Blog post cards | Database — manage in the admin dashboard (see §5) |
 | Gallery photos | `pages/gallery.html` (swap `<img src="…">` to your file in `/images/`) |
 | Video thumbnails (or embed YouTube) | `pages/videos.html` |
 | Contact form / waiver / sign-in / enquiry | The matching `.html` file in `/pages/` |
-| Where the contact & membership forms send email | `api/forms.php` → the `to` value (see §6) |
+| Where the contact & membership forms send email | `api/forms.php` → the `to` value (see §7) |
 
 ### Managing images (no-code workflow)
 
@@ -189,7 +243,7 @@ deploy to a PHP host.
 
 ---
 
-## 4. The admin dashboard
+## 5. The admin dashboard
 
 Everything the club manages day to day lives behind one sign-in at
 **`/pages/admin-login.html`**:
@@ -236,7 +290,7 @@ password any time from the bottom of the dashboard.
 
 ---
 
-## 5. Publications (blog posts) in a database
+## 6. Publications (blog posts) in a database
 
 Blog posts can be stored in a MySQL table and managed from the browser
 instead of hand-editing `pages/blog.html`. Three pieces make this work:
@@ -245,14 +299,14 @@ instead of hand-editing `pages/blog.html`. Three pieces make this work:
 |---|---|
 | `sql/publications.sql` | Creates the `publications` table (+ optional seed rows) |
 | `api/publications.php` | JSON CRUD endpoint — create / read / update / delete rows |
-| `pages/admin-publications.html` + `js/admin-publications.js` | Admin screen: table of posts with New / Edit / Publish / Delete (see §4) |
+| `pages/admin-publications.html` + `js/admin-publications.js` | Admin screen: table of posts with New / Edit / Publish / Delete (see §5) |
 | `js/blog.js` | Loads the public blog page from the table (published posts, newest first) |
 | `pages/article.html` + `js/article.js` | Full-article page — `article.html?slug=<slug>` — linked from every blog card |
 | `api/upload.php` | Image upload (admin only) → saves to `images/publications/` |
 
 ### One-time setup (cPanel)
 
-Covered by the dashboard setup in §4 — run `sql/publications.sql` along with
+Covered by the dashboard setup in §5 — run `sql/publications.sql` along with
 the other SQL files, then sign in and open **Blog posts**.
 
 ### API reference
@@ -287,7 +341,7 @@ existing image on the site (e.g. `images/gallery/amazon-ride-2023/photo-010.jpg`
 or **Remove** to clear it. Make sure `images/publications/` is writable
 (permission `755`) on the host.
 
-Admin routes accept either a dashboard session (§4) or an
+Admin routes accept either a dashboard session (§5) or an
 `X-Admin-Token: <token>` header for scripts. If the host strips
 custom headers, send `?token=<token>` instead; if it blocks PUT/DELETE, POST
 with `"_method": "PUT"` (or `"DELETE"`) in the JSON body.
@@ -298,7 +352,7 @@ rows and builds the cards. Until the database is set up the page shows an
 
 ---
 
-## 6. Forms
+## 7. Forms
 
 ### Contact and Membership — these send real email
 
@@ -351,7 +405,7 @@ the admin bar (or the dashboard's quick actions).
 - The **Emailed** column flags anything saved but not emailed — a quick way
   to spot a mail outage.
 
-**One-time setup:** run `sql/form-submissions.sql` in phpMyAdmin (see §4) so
+**One-time setup:** run `sql/form-submissions.sql` in phpMyAdmin (see §5) so
 the table exists. Until then the forms still email normally; they just aren't
 stored — and the dashboard tells you which SQL file is still missing.
 
@@ -394,7 +448,7 @@ to a WordPress install on the same domain at `/members/`.
 
 ---
 
-## 7. SEO Suggestions (Already Done + Future)
+## 8. SEO Suggestions (Already Done + Future)
 
 **Already in place:**
 - Unique `<title>` and `<meta description>` per page
@@ -420,7 +474,7 @@ to a WordPress install on the same domain at `/members/`.
 
 ---
 
-## 8. Accessibility Notes
+## 9. Accessibility Notes
 
 - All interactive elements are keyboard-navigable.
 - Focus rings use the amber accent colour for high visibility.
@@ -431,13 +485,13 @@ to a WordPress install on the same domain at `/members/`.
 
 ---
 
-## 9. Browser Support
+## 10. Browser Support
 
 Tested in modern Chrome, Edge, Firefox and Safari. Falls back gracefully in older browsers (the carousel and reveal animations degrade to plain static content; nothing is unreadable).
 
 ---
 
-## 10. Suggested UX Improvements (Optional)
+## 11. Suggested UX Improvements (Optional)
 
 Things the original site could benefit from that are easy to add later:
 
@@ -450,7 +504,7 @@ Things the original site could benefit from that are easy to add later:
 
 ---
 
-## 11. Credits
+## 12. Credits
 
 - **Fonts:** Bebas Neue + Inter via Google Fonts.
 - **Photography placeholders:** Unsplash (free for commercial use, no attribution required, but please swap with the club's own photos before launch).

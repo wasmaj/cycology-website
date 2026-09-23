@@ -1,0 +1,90 @@
+# =========================================================
+# Cycology — Apache configuration
+# ---------------------------------------------------------
+# Gives the site clean, extension-less URLs:
+#
+#     /pages/about-us.html   →  /about-us
+#     /index.html            →  /
+#     /pages/article.html?slug=x  →  /article?slug=x
+#
+# Old .html addresses are permanently redirected (301) to the
+# new ones, so existing links, bookmarks and Google results
+# keep working and search engines transfer their ranking.
+#
+# The files themselves stay exactly where they are in /pages/,
+# so opening them from disk still works while you edit.
+#
+# Needs Apache with mod_rewrite — standard on cPanel hosts
+# (InMotion, A2, SiteGround…). Upload this file to public_html
+# alongside index.html. It is invisible in cPanel's File
+# Manager until you tick "Show Hidden Files (dotfiles)" in
+# Settings.
+# =========================================================
+
+# "MultiViews" makes Apache guess at extensions on its own, which
+# fights with the rules below. Turn it off.
+<IfModule mod_negotiation.c>
+  Options -MultiViews
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # ---------- 1. Send visitors to the clean address ----------
+
+  # /index.html and /pages/index.html → the site root
+  RewriteCond %{THE_REQUEST} \s/+(?:pages/)?index\.html[\s?] [NC]
+  RewriteRule ^ / [R=301,L]
+
+  # Every other .html → same name without ".html" and without "/pages/".
+  # Matching THE_REQUEST (the raw request line) rather than the rewritten
+  # path is what stops this from looping with rule 3 below.
+  RewriteCond %{THE_REQUEST} \s/+(?:pages/)?([^\s?]+)\.html[\s?] [NC]
+  RewriteRule ^ /%1 [R=301,L,NE]
+
+  # ---------- 2. Tidy up trailing slashes ----------
+  # /about-us/ → /about-us  (real folders are left alone)
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+  # ---------- 3. Serve the real file behind the clean URL ----------
+  # These are internal rewrites: the browser's address bar keeps showing
+  # the clean URL. The -f test means a clean URL is only served when the
+  # matching .html actually exists; anything else falls through to a
+  # normal 404.
+
+  # /about-us → /pages/about-us.html
+  RewriteCond %{DOCUMENT_ROOT}/pages/$1.html -f
+  RewriteRule ^([^/.]+)$ pages/$1.html [L]
+
+  # /something → /something.html at the site root
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^([^/.]+)$ $1.html [L]
+</IfModule>
+
+# =========================================================
+# Small extras that cost nothing
+# =========================================================
+
+# Never list the contents of a folder that has no index file.
+Options -Indexes
+
+# Cache static assets hard, HTML not at all, so content edits show up
+# immediately while images and CSS stay fast on repeat visits.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html                 "access plus 0 seconds"
+  ExpiresByType text/css                  "access plus 1 month"
+  ExpiresByType application/javascript    "access plus 1 month"
+  ExpiresByType image/jpeg                "access plus 1 year"
+  ExpiresByType image/png                 "access plus 1 year"
+  ExpiresByType image/webp                "access plus 1 year"
+  ExpiresByType image/svg+xml             "access plus 1 year"
+  ExpiresByType image/x-icon              "access plus 1 year"
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml \
+                                application/javascript application/json image/svg+xml
+</IfModule>

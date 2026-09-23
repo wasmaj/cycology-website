@@ -1,12 +1,13 @@
 User-agent: *
 Allow: /
-Disallow: /pages/sign-in.html
+Disallow: /sign-in
 
 # Admin area — never index (the pages also carry <meta name="robots" content="noindex">)
-Disallow: /pages/admin.html
-Disallow: /pages/admin-login.html
-Disallow: /pages/admin-publications.html
-Disallow: /pages/admin-submissions.html
+Disallow: /admin
+Disallow: /admin-login
+Disallow: /admin-publications
+Disallow: /admin-submissions
+Disallow: /pages/
 Disallow: /api/
 
 Sitemap: https://cycology.com.ng/sitemap.xml

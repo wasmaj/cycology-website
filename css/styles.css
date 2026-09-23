@@ -739,6 +739,18 @@ ul.clean { list-style: none; padding: 0; margin: 0; }
   object-fit: contain; object-position: center;
 }
 .sponsor-logo--lg { height: 104px; }
+/* Stand-in for a sponsor whose logo file we don't have yet: the name set as a
+   wordmark, so the card matches the others instead of looking like a broken
+   image. Drop the real logo in and swap this <div> for the usual <img>. */
+.sponsor-logo--text {
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+}
+.sponsor-logo--text span {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 1.15rem; letter-spacing: .02em; line-height: 1.15;
+  color: var(--brand-black);
+}
 
 /* Timeline */
 .timeline { position: relative; padding-left: 2rem; border-left: 2px solid var(--color-line); }

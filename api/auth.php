@@ -53,7 +53,7 @@ function fail($message, $code = 400, $extra = array()) {
 }
 
 $db = cycology_db();
-if (!$db) fail('Database not configured — see README §4', 500);
+if (!$db) fail('Database not configured — see README §5', 500);
 
 $tablesReady = true;
 try { $db->query('SELECT 1 FROM admin_users LIMIT 1'); }

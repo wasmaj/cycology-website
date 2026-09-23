@@ -28,7 +28,7 @@ function respond($data, $code = 200) {
 if (!cycology_is_admin()) respond(array('error' => 'Please sign in'), 401);
 
 $db = cycology_db();
-if (!$db) respond(array('error' => 'Database not configured — see README §4'), 500);
+if (!$db) respond(array('error' => 'Database not configured — see README §5'), 500);
 
 $out = array(
     'setup'        => array(),
