@@ -17,8 +17,8 @@ jobs:
       - name: Upload via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: demo.cycology.com.ng 
-          username: ftps@demo.cycology.com.ng
+          server: cycology.com.ng 
+          username: ftps@cycology.com.ng
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
