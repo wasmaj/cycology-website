@@ -535,6 +535,9 @@ ul.clean { list-style: none; padding: 0; margin: 0; }
   background: linear-gradient(135deg, #1a1a1a 0%, #c8102e 100%);
 }
 .two-col .media img { width:100%; height:100%; object-fit: cover; }
+/* Portrait variant, for photos that are taller than they are wide.
+   Scoped to .two-col so it beats the 4/3 default above. */
+.two-col .media--portrait { aspect-ratio: 4/5; }
 
 /* ---------- Lists ---------- */
 .bullet-list { padding-left: 0; list-style: none; }
@@ -689,6 +692,8 @@ ul.clean { list-style: none; padding: 0; margin: 0; }
   transition: background .2s var(--ease), transform .2s var(--ease);
 }
 .social-row a:hover { background: var(--color-primary); transform: translateY(-2px); color: #fff; }
+/* Brand glyphs inherit the link colour, so the hover state just works. */
+.social-row a svg { width: 17px; height: 17px; fill: currentColor; display: block; }
 .footer-bottom {
   border-top: 1px solid rgba(255,255,255,.08);
   margin-top: 3rem; padding-top: 1.25rem;
@@ -725,6 +730,9 @@ ul.clean { list-style: none; padding: 0; margin: 0; }
 }
 .partner-name { font-weight: 700; color: var(--color-charcoal); margin-bottom: .3rem; }
 .partner-desc { font-size: .85rem; color: var(--color-muted); margin: 0; }
+/* Only when a sponsor's copy runs to more than one paragraph — single
+   paragraph cards keep their existing tight spacing. */
+.partner-desc + .partner-desc { margin-top: .7rem; }
 
 /* Sponsor logo lockup (sits on top of a sponsor card; auto-removed if the
    image file is missing, so the card falls back to text only) */
