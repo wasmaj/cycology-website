@@ -151,6 +151,10 @@ ul.clean { list-style: none; padding: 0; margin: 0; }
 .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 .grid-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 .grid-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+/* Exactly two columns — for sets of four items that should read as a
+   balanced 2x2 block rather than auto-fit's 3 + 1 orphan row. */
+.grid-2x2 { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 700px){ .grid-2x2 { grid-template-columns: 1fr; } }
 
 /* ---------- Buttons ---------- */
 .btn {
@@ -1557,3 +1561,19 @@ ul.clean { list-style: none; padding: 0; margin: 0; }
 .dash-item-main > span { font-size: .8rem; color: var(--color-muted); }
 .dash-item-date { font-size: .8rem; color: var(--color-muted); white-space: nowrap; }
 .dash-list .gallery-empty { border: 0; margin: 0; }
+
+/* Long-form pull quotes (Share the Road webinar). Stacked full width rather
+   than in a card grid — these run to several sentences and a narrow column
+   would stretch them into an unreadable ribbon. */
+.quote-stack { display: grid; gap: 1.25rem; max-width: 860px; }
+.quote-card {
+  margin: 0; padding: 1.5rem 1.75rem;
+  background: #fff; border: 1px solid var(--color-line);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius);
+}
+.quote-card p { font-style: italic; font-size: 1.02rem; line-height: 1.75; margin: 0; color: #2b3138; }
+.quote-card footer {
+  margin-top: 1rem; font-size: .88rem; font-weight: 700;
+  color: var(--color-muted); font-style: normal;
+}
